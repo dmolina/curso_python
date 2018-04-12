@@ -1,0 +1,2792 @@
+#+title: Curso de Python: Nivel Inicial
+#+author: Daniel Molina Cabrera
+#+date: Curso de Python (Abril 2018)
+#+latex_class: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed]
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \lstset{escapeinside={'}{'},basicstyle=\scriptsize\ttfamily,showspace=false}
+#+BEAMER_THEME: ucadoc
+#+options: H:2 ^:nil toc:nil
+#+SELECT_TAGS: available
+#+EXCLUDE_TAGS: noexport
+#+LaTeX: \AtBeginSection[]{ \begin{frame}{Índice}     \tableofcontents[currentsection]     \end{frame} }
+#+PROPERTY: header-args :eval never-export
+* Ignore                                                           :noexport:
+#+BEGIN_SRC elisp :exports none
+  (setq org-latex-listings 'listing)
+  (setq org-latex-prefer-user-labels t)
+  ;; Avoid error with 25.1.x
+  (with-eval-after-load 'python
+    (defun python-shell-completion-native-try ()
+      "Return non-nil if can trigger native completion."
+      (let ((python-shell-completion-native-enable t)
+            (python-shell-completion-native-output-timeout
+             python-shell-completion-native-try-output-timeout))
+        (python-shell-completion-native-get-completions
+         (get-buffer-process (current-buffer))
+         nil "_"))))
+#+END_SRC
+
+#+RESULTS:
+: python-shell-completion-native-try
+
+
+* 
+#+BEGIN_EXPORT latex
+\begin{frame}
+\frametitle{Contenido del tema}
+\tableofcontents[hideallsubsections,part=1]
+\end{frame}
+#+END_EXPORT
+
+#+BEGIN_EXPORT latex
+\begin{frame}
+\frametitle{Contenido del tema}
+\tableofcontents[hideallsubsections,part=2]
+\end{frame}
+#+END_EXPORT
+
+
+
+
+** Sobre mí
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Foto                                                    :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.3
+     :END:
+#+attr_latex: :width \textwidth
+[[file:me.jpg]]
+**** Sobre mí :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.7
+     :END:
+
+- Daniel Molina Cabrera.
+
+- Email: [[mailto:dmolina@decsai.ugr.es][dmolina@decsai.ugr.es]]
+
+- Profesor de Informática en Ceuta-UGR. 
+
+- Feliz programador de Python desde hace más de 15 años.
+
+- Desarrollador oficial de varios paquetes Python en Pypi.
+
+- Impartido varias asignaturas usando Python.
+
+- Defensor /a ultranza/ del software libre.
+
+
+#+LaTeX: \part{1}
+* Introducción sobre Python  ¿Por qué Python?                      
+
+** ¿Qué es Python?        
+
+*** Python Logo                                             :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+\includegraphics<1>[width=.4\textwidth]{python_real.jpg}
+\includegraphics<2->[width=.4\textwidth]{monty_python.jpg}
+\includegraphics<2->[width=.4\textwidth]{python_logo.png}
+#+END_EXPORT
+#+END_CENTER
+
+\pause
+\pause
+
+*** Es un lenguaje de programación
+
+- Es un lenguaje para programar todo tipo de aplicaciones.
+
+- Se diseñó para que fuese *fácil de usar* y *divertido*.
+
+
+** ¿Quién lo inventó?
+
+#+BEGIN_CENTER
+#+attr_latex: :width 0.5\textwidth
+[[file:PythonProgLogo.png]]
+#+END_CENTER
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Foto                                                    :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.3
+     :END:
+
+#+attr_latex: :width \textwidth
+[[file:guido.jpg]]
+
+**** Texto                                                   :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.8
+     :END:
+
+- Inventado por Guido Van Rossum.
+
+- Creado en 1989 en vacaciones de navidad.
+
+- Pensado para enseñar programación a niños.
+
+- Muy bien aceptado por la comunidad.
+
+- No dependiente del autor: dilema del autobús.
+
+- Influyente: Ruby, ...
+
+** ¿Por qué Python? Es popular
+   
+#+caption: consulta de tutoriales (fuente: [[https://pypl.github.io/PYPL.html][PYPL (Google Trends)]])
+#+attr_latex: :width \textwidth
+[[file:popularidad_tutoriales.png]]
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+{\Large {\color{blue}Es popular}}
+#+END_EXPORT
+#+END_CENTER
+
+** ¿Por qué Python? Es popular
+
+#+caption: evolución  en TIOBE 
+|------------+------------+----------+------------+-----------|
+| Marzo 2018 | Marzo 2017 | Lenguaje | Porcentaje | Evolución |
+|------------+------------+----------+------------+-----------|
+|          1 |          1 | Java     |    14.941% |    -1.44% |
+|          2 |          2 | C        |    12.760% |    +5.02% |
+|          3 |          3 | C++      |     6.452% |    +1.27% |
+|          4 |          5 | Python   |     5.869% |    +1.95% |
+|          5 |          4 | C#       |     5.067% |    +0.66% |
+|------------+------------+----------+------------+-----------|
+
+
+** Tengo unas gráficas más[fn:1]
+
+#+attr_latex: :height .7\textheight
+[[file:growth.png]]
+
+[fn:1]source: https://bit.ly/2f54vYk
+
+** Muchas más gráficas [fn:1]
+
+#+attr_latex: :height .8\textheight
+[[file:non_hight.png]]
+
+[fn:1]source: https://bit.ly/2f54vYk
+
+** Visión general de crecimiento[fn:1]
+
+#+attr_latex: :height .7\textheight
+[[file:tag_grown.png]]
+
+[fn:1] source: https://bit.ly/2f54vYk
+
+** ¿Quién lo usa?
+
+#+attr_latex: :width \textwidth
+[[file:quienlousa.png]]
+
+** ¿Y en temas actuales?
+
+#+attr_latex: :height \textheight
+[[file:python_machine_learning.png]]
+
+** Pero eso no es lo importante
+
+#+BEGIN_CENTER
+#+attr_latex: :width \textwidth
+[[file:whyus.png]]
+#+END_CENTER
+
+** Ventajas de Python: Portabilidad
+
+#+attr_latex: :width \textwidth
+[[file:runanywhere.jpg]]
+
+
+** Portabilidad
+
+*** Es un lenguaje interpretado
+
+- No se compila a ejecutable.
+
+- Se necesita Python para ejecutar.
+
+  + Disponible en distintos sistemas operativos. 
+
+*** Ejemplo de uso
+
+#+NAME: hello
+#+BEGIN_SRC sh :results output :exports both
+python hello.py
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: hello
+: hola a todos
+
+*** Otra opción (Linux)
+
+#+BEGIN_SRC python
+#!/usr/bin/env python3
+print("hola a todos")
+#+END_SRC
+
+#+BEGIN_SRC sh
+chmod a+x hello.py
+./hello.py
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS:
+: hola a todos
+
+** Ventajas de Python: Legibilidad
+
+#+attr_latex: :width 0.8\textwidth
+[[file:easy.jpg]]
+
+
+** Ventajas de Python: Legibilidad
+*** C/C++                                                           :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main(void) {
+    std::cout <<"Hola a todos desde C++" <<std::endl;
+  }
+#+END_SRC
+
+*** Java                                                            :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+
+  #+BEGIN_SRC java
+  class Main {
+      public static void main(String[] args) {
+          System.out.println("Hola a  todos desde Java");
+      }
+  }
+#+END_SRC
+
+*** Python
+
+#+BEGIN_SRC python
+print("Hola a todos desde Python\n")
+#+END_SRC
+
+** Ventajas de Python: Legibilidad, Alto nivel
+
+*** Admite variables alto nivel                              :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+  list = ["fruta", "cereales", "berenjena"]
+
+  for item in list:
+      print(item)
+#+END_SRC
+
+*** Ejemplo: Implementar programa grep                       :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+from sys import argv
+
+def main(fname, word):
+    with open(fname, "r") as file:
+        for line in file:
+            if word in line:
+                print(line)
+
+
+if __name__ == "__main__":
+    main(argv[2], argv[1])
+#+END_SRC
+
+
+** Ventajas de Python: Legibilidad, Alto nivel
+
+#+attr_latex: :width 0.8\textwidth
+[[file:pseudo.jpg]]
+
+
+** El Zen de Python
+
+*** Zen de Python, de Tim Peters
+
+#+BEGIN_VERSE
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+#+END_VERSE
+
+*** Criterios de diseño de Python
+
+- Diseñado para simplicidad.
+
+** Ventajas de Python: Comunidad
+
+*** Lenguaje /open source/
+
+- Dirigido por la comunidad.
+- [[https://github.com/vinta/awesome-python][Todo tipo de librerías]].
+- Repositorio de librerías disponibles.
+
+*** Versátil
+
+- Aplicaciones escritorio :: PyQt, ....
+- automatización :: Fabric, celery, ...
+- Aplicaciones webs :: Django, Flask.
+- Software científico :: Numpy, Pandas, Matplotlib.
+- Machine Learning :: NLTK, TensorFlow, Scikit-learn.
+
+
+** Ventajas de Python: Comunidad
+
+#+caption: Librerías de software científico
+#+attr_latex: :width 0.8\textwidth
+[[file:librerias_ciencia.png]]
+
+** Pero sobre todo
+
+*** Columna                                                       :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Flying                                                  :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.5
+     :END:
+ 
+[[file:flying_joke.png]]
+
+**** Isfun                                                   :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.5
+     :END:
+
+[[file:isfun.jpg]]
+
+* Sobre el curso                                                   
+
+
+** ¿Qué necesito? 
+
+*** Imagen                                                        :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Logo Python                                             :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.3
+     :END:
+
+ #+BEGIN_CENTER
+ #+attr_latex: :width .8\textwidth
+ [[file:python_logo.png]]
+ #+END_CENTER
+
+
+**** Anaconda                                                :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.3
+     :END:
+ #+BEGIN_CENTER
+ #+attr_latex: :width .8\textwidth
+ [[file:logo-anaconda.png]]
+ #+END_CENTER
+**** Brain                                                   :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.3
+     :END:
+ #+BEGIN_CENTER
+ #+attr_latex: :width \textwidth
+ [[file:brain3.jpg]]
+ #+END_CENTER
+
+*** Requisitos
+
+- Un ordenador.
+
+- Da igual el SO: Windows, Linux, MacOS. 
+
+- Instalaremos Python3 usando Anaconda (opcional si ya está instalado).
+
+- Ocupa espacio, pasaré un /pendrive/.
+
+** ¿Cómo será?
+
+*** Imagen                                                  :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+
+#+BEGIN_CENTER
+#+attr_latex: :width 0.6\textwidth
+[[file:clase.png]]
+#+END_CENTER
+
+*** Texto                                                         :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_envargs: top
+    :END:
+**** Interactivo                                              :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+
+- Trabajaremos en Python.
+- Estilo taller.
+
+**** Sin conocimientos previos                                :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+
+ - De otros lenguajes.
+   - Siempre útil.
+
+ - Estilo /Pythonico/.
+
+** ¿Qué veremos?
+
+*** Día 1: Introducción
+
+- Qué es y qué ofrece Python (Visto)
+
+- Instalación de Python y entornos.
+
+- Sintaxis de Python:
+
+  + Tipos de datos.
+
+  + Condicionales y bloques.
+
+*** Día 2: Sintaxis de Python
+
+  - Bucles. 
+
+  - Manejo de listas e iteradores.
+
+  - Definiendo funciones y clases.
+
+  - Instalando y usando librerías.
+
+** ¿Qué veremos?
+
+
+*** Día 3: Comunicando con Python
+
++ Trabajando con ficheros.
+
++ Acceso a datos desde Python.
+
++ Comunicando por la red
+
+*** Día 4: Jugando con Python
+
++ Gráficas con Python:
+  + Modificando imágenes en cola.
+  + Visualizando datos.
+
++ Página web con Python:
+  + Servidor Flask.
+
+** Bibliografía
+
+*** Portadas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Uno                                                     :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.5
+     :END:
+
+#+attr_latex: :width 0.5\textwidth
+[[file:cover_Driveinto3.jpg]]
+
+**** Dos                                                     :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.5
+     :END:
+#+attr_latex: :width 0.5\textwidth
+file:cover_automate.png
+
+
+*** Referencias
+
+ - http://www.diveintopython.net/
+ - https://automatetheboringstuff.com/
+
+* Instalando Python y Entornos                                     
+
+** Instalando Python
+
+#+BEGIN_CENTER
+#+attr_latex: :width .4\textwidth
+[[file:logo-anaconda.png]]
+#+END_CENTER
+
+*** Instalación
+
+Disponible en https://docs.anaconda.com/anaconda/install/
+
+- Windows.  
+
+- Linux.
+
+- MacOS.
+
+** Instalando Python 
+
+*** En pendrive                                              :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+- Windows :: .exe (https://www.anaconda.com/download/#windows).
+- Linux :: .sh (https://www.anaconda.com/download/#linux).
+- MacOS :: .pkg (https://www.anaconda.com/download/#macos)
+
+** Instalando en Windows
+
+#+BEGIN_EXPORT latex
+\includegraphics<1>[width=.9\textwidth]{install_win1.png}
+\includegraphics<2>[width=.9\textwidth]{install_win2.png}
+\includegraphics<3>[width=.9\textwidth]{install_win3.png}
+\includegraphics<4>[width=.9\textwidth]{install_win4.png}
+#+END_EXPORT
+
+** Instalando en MacOS
+
+#+BEGIN_EXPORT latex
+\includegraphics<1>[width=.9\textwidth]{install_mac1.png}
+\includegraphics<2>[width=.9\textwidth]{install_mac2.png}
+\includegraphics<3>[width=.9\textwidth]{install_mac3.png}
+\includegraphics<4>[width=.9\textwidth]{install_mac4.png}
+#+END_EXPORT
+
+** Instalando en Linux
+
+*** Usando Anaconda
+
+#+BEGIN_SRC sh
+bash ~/Downloads/Anaconda3-5.1.0-Linux-x86_64.sh
+#+END_SRC
+
+*** Desde el sistema de paquetes
+
+#+BEGIN_SRC sh
+sudo apt install python3
+python3 -m pip install --upgrade pip
+python3 -m pip install jupyter
+#+END_SRC
+
+** Entornos
+
+
+*** Formato interactivo
+
+- python :: Línea de forma interativa.
+- ipython/jupyer :: interfaz con /esteroides/ (autocompletado, ...).
+
+- ipython/jupyter notebook :: Interfaz web.
+
+*** Notebook                                                 :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+- Entorno desde el navegador. 
+
+- Fácil para pruebas rápidas (usaremos los primeros días).
+
+- Formato de ficheros /.ipyb/ aceptado por Github.
+
+*** Editores Específicos de Python
+
+- [[http://thonny.org/][Tonny]] :: Editor para aprendizaje.
+
+- Spyder :: Disponible en Anaconda, integrado con consola.
+
+** Ejemplo de entornos (Python por defecto)
+
+#+caption: consola por defecto de python
+#+attr_latex: :width .8\textwidth
+[[file:python.png]]
+
+** Ejemplo de entornos (IPython/Jupyter)
+
+#+caption: consola de ipython/jupyter
+#+attr_latex: :width .8\textwidth
+[[file:ipython.png]]
+
+
+** Ejemplo de entornos (IPython/Jupyter notebook)
+
+#+attr_latex: :width .8\textwidth
+[[file:notebook1.png]]
+
+** Ejemplo de entornos (IPython/Jupyter notebook)
+
+#+attr_latex: :width .8\textwidth
+[[file:notebook2.png]]
+
+
+** Ejemplo de entornos (Tonny)
+
+#+attr_latex: :width .8\textwidth
+file:tonny.png
+
+** Ejemplo de entornos (Spyder)
+
+#+attr_latex: :width .8\textwidth
+[[file:spyder.png]]
+
+
+
+** Editores e IDE
+
+*** Logos                                                         :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Atom :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.32
+     :END:
+
+#+attr_latex: :width \textwidth
+[[file:atom_logo.png]]
+
+**** Sublime Tex :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.2
+     :END:
+
+#+attr_latex: :width \textwidth
+[[file:sublimetext.png]]
+
+**** Vim                                                     :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.2
+     :END:
+
+#+attr_latex: :width \textwidth
+[[file:neovim.png]]
+
+**** Spacemacs (Emacs) :B_column:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: column
+     :BEAMER_col: 0.15
+     :END:
+
+#+attr_latex: :width \textwidth
+[[file:spacemacs.png]]
+
+*** Editores Extensibles
+
+- Atom :: Editor de Github, muchos módulos.
+- SublimeText :: Editor no gratuito extensible, muy popular.
+- NeoVim :: Fork de vim.
+- Spacemacs :: Emacs preconfigurado. 
+
+*** IDE completos
+
+- PyCharm :: Versión community, módulos de pago.
+- PyDev :: Módulo de eclipse.
+
+* Empezando con Python      
+
+** Empezando con Python
+
+#+attr_latex: :heigth .65\textheight
+[[file:anaconda_navigator.png]]
+
+*** Pasos                                                     :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+
+1. Lanzar "Anaconda Navigator".
+
+2. Seleccionar Jupyter Notebook.
+
+** Variables
+
+*** 
+
+#+name: hello
+#+BEGIN_SRC python :results output :export both
+msg = "Hola a todos"
+print(msg)
+#+END_SRC
+#+RESULTS: hello
+: Hola a todos
+
+#+RESULTS:
+: Hola a todos
+
+*** Variables
+
+- Las variables permiten guardar datos. 
+- Se accede a los valores usando el nombre de la variable. 
+- Se puede modifican los valores durante la ejecución.
+
+*** 
+#+name: var
+#+BEGIN_SRC python :results output :exports both
+a = 3
+b = 4
+print(a+b)
+a = a+1
+print(a+b)
+#+END_SRC
+#+latex: \scriptsize
+#+RESULTS: var
+: 7
+: 8
+
+** Tipos de variables
+
+*** Las variables pueden guardar distinto tipo de datos
+
+- Números entero :: number = 3
+- Números real  :: number_real = 3.2
+- Cadena :: msg = "Hola"
+- Listas :: lista = [1, 2, 3]
+- Tabla hash :: datos = {'c': "cerrar", 'd': "delete"}
+
+*** Asignación                                                     
+
+#+BEGIN_SRC python :session ses :exports none :results none
+number = 3
+number_real = 3.2
+msg = "Hola"
+lista = [1, 2, 3]
+datos = {'c': "cerrar", 'd': "delete"} 
+#+END_SRC
+
+*** Diferencia                                                 :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+- No hay que definir el tipo de una variable.
+- Una misma variable pueden tomar valores de distinto tipo (no recomendado).
+
+***  
+#+BEGIN_SRC python
+variable = 4
+variable = "hola"
+#+END_SRC
+
+** Ejemplo de uso
+
+*** Ejemplo de uso
+#+name: tipos
+#+BEGIN_SRC python :results output :exports both :session ses
+print(number+1)
+print(number_real-1)
+print(lista)
+print(datos)
+#+END_SRC
+#+latex: \scriptsize
+#+RESULTS: tipos
+: 4
+: 2.2
+: [1, 2, 3]
+: {'c': 'cerrar', 'd': 'delete'}
+
+*** Aviso                                                      :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+Python tiene tipos, no se permiten operaciones entre tipos.
+*** 
+
+#+name: error
+#+BEGIN_SRC python :session ses :results output :exports both
+print(number+lista)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: error
+: Traceback (most recent call last):
+:   File "<stdin>", line 1, in <module>
+: TypeError: unsupported operand type(s) for +: 'int' and 'list'
+
+
+** Asignación de tipos en Python3
+
+*** En Python3 se incorporó definir tipos en variables
+#+name:typing
+#+BEGIN_SRC python :results output
+count: int = 4
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: typing
+: 4
+
+*** Vamos a meter un error                                          :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+#+name: ej_typing
+#+BEGIN_SRC python :results output :exports both
+count: int = 4
+count += 1.5
+#+END_SRC
+
+*** El analizador (mypy) detecta errores en tipos              :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+#+name: ej_ty1
+#+BEGIN_SRC sh :results output :exports both
+python3 ej_typing.py
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: ej_ty1
+: 5.5
+#+BEGIN_SRC sh 
+python3 -m mypy ej_typing.py # or mpy ej_typing.py
+#+END_SRC
+#+LaTeX: \scriptsize
+ej_typing.py:2: error: Incompatible types in assignment (expression has type "float", variable has type "int")
+
+** Usando variables
+
+*** Tipos entero
+
+#+name: entero
+#+BEGIN_SRC python :results output :exports both
+number = 3
+print(number+3)
+print(number/2)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: entero
+: 6
+: 1.5
+
+*** División                                                   :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+- Dividir números enteros devuelve un número real.
+- La división entera es otra operación: //.
+
+*** 
+  #+name: div_entera
+  #+BEGIN_SRC python :results output :exports both
+  number = 3
+  print(number//2)
+  #+END_SRC
+  #+LaTeX: \scriptsize
+  #+RESULTS: div_entera
+  : 1
+
+** Usando variables
+
+*** Tipo real
+
+#+BEGIN_SRC python :results output :exports both :session ses
+number = 3
+number_real = number_real + number
+print(number_real)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS:
+: 9.2
+
+*** Tipo cadena
+
+#+name: ej_str
+#+BEGIN_SRC python :results output :exports both :session ses
+msg = "hola"
+print("a" in msg)
+msg = msg + " adios"
+print(msg)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: ej_str
+: True
+: hola adios
+
+** Usando variables
+
+*** Tipo List
+#+name: ej_lista
+#+BEGIN_SRC python :results output :exports both :session ses
+lista2 = lista + [6]
+print(lista)
+print(lista2)
+print(4 in lista)
+print("El primer valor es ", lista2[0])
+print("Los dos siguientes son", lista2[1:3])
+print("Los siguientes son", lista2[1:])
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: ej_lista
+: [1, 2, 3]
+: [1, 2, 3, 6]
+: False
+: El primer valor es  1
+: Los dos siguientes son [2, 3]
+: Los siguientes son [2, 3, 6]
+
+** Bloques y Condicionales
+
+*** Condicionales
+
+- Aplicar el mismo código siempre igual no es /divertido/.
+
+- Un programa puede ejecutar código según una condición. 
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python 
+  print("Dime un numero")
+  numero = int(input())
+
+  if numero == 7:
+    print("Has acertado!!!\n")
+  else:
+    print("Has fallado, mas suerte para otra\n")
+#+END_SRC
+
+** Bloques y condicionales
+
+*** Definiendo los bloques
+
+- Los bloques se marcan en otros lenguajes usando {...}.
+
+- Por legibilidad se debe tabular. 
+
+- Python se guía de la tabulación, es necesario un editor adecuado.
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+  cantidad = int(input())
+
+  if cantidad < 1000:
+    if cantidad < 100:
+      print("Eso es una miseria")
+    else:
+      print("Eso es poco")
+  else:
+    print("Es mucho, pero te lo acepto por hacerte un favor")
+#+END_SRC
+
+** Condicionales
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+  if number > 5:
+    print("mayor que 5")
+#+END_SRC
+
+*** Formato
+
+- Tras palabra *if* se indica una condición y un *:*.
+
+- El código tabulado se ejecuta sólo si la condición se cumple.
+
+- Puede ponerse un else, se ejecuta si no se cumple.
+
+*** Con else                                                 :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+  if number > 5:
+    print("mayor que 5")
+  else:
+    print("menor o igual que 5")
+#+END_SRC
+* Listas                                                           
+#+LaTeX: \part{2}
+
+** Listas
+
+*** Listas
+
+- Permiten guardar varios valores en una variable.
+
+- Pueden ser de tipos distintos (no recomendable).
+- Se pueden acceder mediante corchetes y posición:
+  - 0 \Rightarrow primer elemento.
+  - 1 \Rightarrow segundo elemento.
+  - ...
+  
+*** Ejemplos
+
+#+NAME: list1
+#+BEGIN_SRC python :results output :exports both :session ses
+lista1 = ['monty', 'python', 42]
+lista2 = [1, 2, 3, 4, 5]
+print(lista1[1], lista1[2], lista2[3])
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: list1
+: python 42 4
+
+** Modificando elementos
+
+*** Cambiando el valor
+
+- Directamente :: lista[ /posicion/ ] = /nuevo valor/.
+
+*** Añadiendo elementos
+
+- Al final :: Método append (lo más eficiente).
+
+- Varios al final :: Operador + (ambos deben ser listas).
+
+- En medio :: Método insert (/insert(posicion, valor)/).
+
+*** Borrando elementos
+
+- Todos los elementos :: Método clean.
+
+- Elemento concreto :: /del lista[posicion]/.
+** Modificando listas                                               :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Ejemplos                                          :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: mod_list
+ #+BEGIN_SRC python :results output :exports both :session ses
+ lista = [1, 2, 3, 4, 5]
+ print(lista)
+ lista[2] *= 2
+ print(lista)
+ lista.append(9)
+ print(lista)
+ lista.insert(0, 0)
+ print(lista)
+ del lista[4]
+ print(lista)
+ lista = lista + [10, 11]
+ print(lista)
+ lista.clear()
+ print(lista)
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: mod_list
+ : [1, 2, 3, 4, 5]
+ : [1, 2, 6, 4, 5]
+ : [1, 2, 6, 4, 5, 9]
+ : [0, 1, 2, 6, 4, 5, 9]
+ : [0, 1, 2, 6, 5, 9]
+ : [0, 1, 2, 6, 5, 9, 10, 11]
+ : []
+
+
+** Accediendo elementos
+
+*** Accediendo elementos
+
+- Único elemento :: lista[ /posicion/ ] 
+- Rango de elementos entre [inicio, fin[ :: lista[ /inicio/: /fin/ ]
+- Rango de elementos con salto :: lista[ /inicio/: /fin/ : /salto/ ]
+- Rango antes de una posición :: lista[ : /posicion/ ]
+- Rango desde de una posición :: lista[ /posicion/ : ]
+- Rango desde de una posición :: lista[ : /posicion/ ]
+
+*** ¿Tamaño?
+
+- len() :: El número de elementos, vale para muchos tipos.
+
+** Accediendo elementos 
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Accediendo elementos                              :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :BEAMER_opt: <1->
+     :END:
+#+NAME: sel_lista
+#+BEGIN_SRC python :results output :exports both :session ses
+lista = [1, 2, 3, 4, 5, 6]
+print(lista[3])
+print(lista[1:3])
+print(lista[0:3])
+print(lista[:3])
+print(lista[3:])
+print(lista[0:6:2])
+print(lista[::2])
+print(lista[:])
+print(lista[::])
+print(lista[::-1])
+#+END_SRC
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+     #+LATEX: \scriptsize
+ #+RESULTS: sel_lista
+ #+begin_example
+ 4
+ [2, 3]
+ [1, 2, 3]
+ [1, 2, 3]
+ [4, 5, 6]
+ [1, 3, 5]
+ [1, 3, 5]
+ [1, 2, 3, 4, 5, 6]
+ [1, 2, 3, 4, 5, 6]
+ [6, 5, 4, 3, 2, 1]
+ #+end_example
+** Las listas son referencias
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Cuidado con variables                             :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.52
+     :END:
+
+ #+NAME: list_ref
+ #+BEGIN_SRC python :results output :exports both :session ses
+ lista = [1, 2, 3, 4, 5, 6]
+ lista2 = lista
+ lista2[2] = 0
+ print("Lista2: ", lista2)
+ print("Lista original: ", lista)
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.48
+     :BEAMER_env: block
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: list_ref
+ : Lista2:  [1, 2, 0, 4, 5, 6]
+ : Lista original:  [1, 2, 0, 4, 5, 6]
+
+*** Cuidado con las variables                                  :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+ - Ambas variables contienen la misma lista.
+
+ - Modificando una variable se modifica el valor de la otra.
+
+** Solución: hacer copias
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Cuidado con variables                             :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.52
+     :END:
+
+ #+NAME: list_ref2
+ #+BEGIN_SRC python :results output :exports both :session ses
+ lista = [1, 2, 3, 4, 5, 6]
+ lista2 = lista[:]
+ lista2[2] = 0
+ print("Lista2: ", lista2)
+ print("Lista original: ", lista)
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.48
+     :BEAMER_env: block
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: list_ref2
+ : Lista2:  [1, 2, 0, 4, 5, 6]
+ : Lista original:  [1, 2, 3, 4, 5, 6]
+
+
+* Tipos cadena
+
+** Cadenas
+   
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Son listas                                               :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.7
+     :BEAMER_env: block
+     :END:
+
+ #+NAME: cad1
+ #+BEGIN_SRC python :results output :exports both :session ses
+   msg = "hola"
+   print(len(msg))
+   print(msg[1])
+   print("Caracteres: ")
+
+   for c in msg:
+     print(c)
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.3
+     :END:
+
+  #+LATEX: \scriptsize
+  #+RESULTS: cad1
+  : 4
+  : o
+  : Caracteres: 
+  : h
+  : o
+  : l
+  : a
+
+
+* Bucles e iteradores                                              
+
+** Tipos de bucle: while
+
+*** Ejemplo                                                       :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Diagrama                                                         :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.4
+     :END:
+
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width .8\textwidth
+[[file:while.jpg]]
+#+END_CENTER
+
+**** Ejemplo                                                  :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.6
+     :END:
+
+#+NAME: while
+#+BEGIN_SRC python :results output :exports both :session ses
+  num = 1
+
+  while num <= 5:
+    print(num)
+    num = num + 1
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: while
+: 1
+: 2
+: 3
+: 4
+: 5
+
+
+*** Bucles while
+
+Ejecuta el código tabulado mientras se cumpla la condición.
+
+** Tipos de bucle: for
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo                                           :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: for1
+ #+BEGIN_SRC python :results output :exports both :session ses
+   lista = ['a', 'b', 'c', 'd', 'e']
+
+   for num in lista:
+     print(num)
+ #+END_SRC
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :BEAMER_env: block
+     :END:
+  #+LATEX: \scriptsize
+  #+RESULTS: for1
+  : a
+  : b
+  : c
+  : d
+  : e
+
+
+*** Bucles for
+
+- Formato :: for <variable> in <lista>:
+                 bloque
+
+*** Significado
+
+- Por cada elemento de la lista:
+  - Asigna su valor en la variable. 
+  - Ejecuta el bloque de código tabulado.
+
+
+** Tipos de bucle: for
+
+*** Programador acostumbrado a otros lenguajes
+
+**** Columnas                                                     :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
+***** Código                                                          :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.4
+      :END:
+
+  #+NAME: forc
+  #+BEGIN_SRC python :results output :exports both :session ses
+    for i in range(0, len(lista)):
+      print(lista[i])
+  #+END_SRC
+
+***** Imagen                                                          :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width .7\textwidth
+[[file:workinghard.jpg]]
+#+END_CENTER
+
+*** Programador /pythonico/
+
+**** Columnas                                                     :B_columns:
+     :PROPERTIES:
+     :BEAMER_env: columns
+     :END:
+
+***** Código                                                          :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.5
+      :END:
+#+BEGIN_SRC python :results output :exports both :session ses
+   for elem in lista:
+     print(elem)
+ #+END_SRC
+
+***** Imagen                                                          :BMCOL:
+      :PROPERTIES:
+      :BEAMER_col: 0.3
+      :END:
+
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width .6\textwidth
+[[file:workingrelaxed.png]]
+#+END_CENTER
+
+** Tipos de bucle: for
+
+*** ¿Y si necesito el índice?                                :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: +enum
+#+BEGIN_SRC python :results output :exports both :session ses
+  for i, elem in enumerate(lista):
+      print("El elemento", i, "vale", elem, "==", lista[i])
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: +enum
+: El elemento 0 vale 1 == 1
+: El elemento 1 vale 2 == 2
+: El elemento 2 vale 3 == 3
+: El elemento 3 vale 4 == 4
+: El elemento 4 vale 5 == 5
+: El elemento 5 vale 6 == 6
+
+*** Función enumerate
+
+Recibe una lista, devuelve además de cada elemento de la lista, la posición (empezando por cero).
+
+** Tipos de bucle: for
+
+*** ¿Y si necesito recorrer varias listas a la vez?          :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: zip
+#+BEGIN_SRC python :results output :exports code :session ses
+  nombres = ['Daniel', 'Amalia', 'Carlos', 'Rosa']
+  pies = [43, 41, 44, 42]
+
+  # Option 1: estilo C
+  for i in range(len(nombres)):
+      print("Usuario", nombres[i], "tiene pie", pies[i])
+  # Option 2: Recorrido con enumerate
+  for i, nombre in enumerate(nombres):
+      print("Usuario", nombre, "tiene pie", pies[i])
+  # Option 3: uso de zip
+  for nombre, pie in zip(nombres, pies):
+      print("Usuario", nombre, "tiene pie", pie)
+#+END_SRC
+#+RESULTS: zip
+#+begin_example
+Usuario Daniel tiene pie 43
+Usuario Amalia tiene pie 41
+Usuario Carlos tiene pie 44
+Usuario Rosa tiene pie 42
+Usuario Daniel tiene pie 43
+Usuario Amalia tiene pie 41
+Usuario Carlos tiene pie 44
+Usuario Rosa tiene pie 42
+Usuario Daniel tiene pie 43
+Usuario Amalia tiene pie 41
+Usuario Carlos tiene pie 44
+Usuario Rosa tiene pie 42
+#+end_example
+*** Función zip
+
+Recibe varias listas, devuelve cada elemento de todas.
+
+** Formato inline de for
+
+*** Notación más matemática
+
+#+NAME: forin1
+#+BEGIN_SRC python :results output :exports both :session ses
+lista = [1, 2, 3, 4, 5]
+doble = [2*x for x in lista]
+print(doble)
+doble_par = [2*x for x in lista if x % 2 == 0]
+print(doble_par)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: forin1
+: [2, 4, 6, 8, 10]
+: [4, 8]
+
+*** Formato
+
+- [expresion *for* variable *in* lista]
+
+- [expresion *for* variable *in* lista *if* condicion]
+
+
+** Concepto de iterador
+
+*** Iterador: 
+
+- Función que devuelve una serie de elementos. 
+
+- Se usan en los bucles for. 
+
+- Se generan los elementos en cada ejecución del bucle, ahorra memoria. 
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Ejemplo: range()                                  :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: range
+ #+BEGIN_SRC python :results output :exports both :session ses
+   ran = range(3)
+   # No muestra la lista
+   print(ran)
+   # Se puede recorrer ahora
+   for x in ran:
+     print(x)
+   # O directamente
+   for x in range(3):
+     print(x)
+ #+END_SRC
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: range
+ : range(0, 3)
+ : 0
+ : 1
+ : 2
+ : 0
+ : 1
+ : 2
+
+** Otros iteradores
+
+*** Métodos iteradores clásicos
+
+- map :: Aplica una función a cada elemento de una lista(secuencia). 
+
+- filter :: Filtra los elementos de una lista.
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Ejemplo                                           :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :BEAMER_env: exampleblock
+     :END:
+ #+NAME: map
+ #+BEGIN_SRC python :results output :exports both :session ses
+   pares = filter(espar, lista)
+
+   for x in pares:
+     print(x)
+ #+END_SRC
+**** Columna                                                          :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** espar                                            :B_exampleblock:BMCOL:
+      :PROPERTIES:
+      :BEAMER_env: exampleblock
+      :END:
+#+NAME: espar
+#+BEGIN_SRC python :results output :exports both :session ses
+   def espar(x):
+       return x % 2 == 0
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: espar
+
+***** Salida                                                        :B_block:
+      :PROPERTIES:
+      :BEAMER_env: block
+      :END:
+  #+LATEX: \scriptsize
+  #+RESULTS: map 
+  : 2
+  : 4
+  : 6
+
+** Posibles problemas con iteradores
+
+*** Range es seguro                                      :B_alertblock:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :BEAMER_col: 1.0
+    :END:
+
+- Otros métodos: map, filter, ... no lo son.
+
+- Eso implica que sólo se pueden ejecutar una vez.
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+**** Ejemplo                                           :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :BEAMER_env: exampleblock
+     :END:
+ #+NAME: map
+ #+BEGIN_SRC python :results output :exports both :session ses
+   pares = filter(espar, lista)
+   print("Primera vez")
+
+   for x in pares:
+     print(x)
+
+   print("Repetimos")
+
+   for x in pares:
+     print(x)
+ #+END_SRC
+**** Columna                                                          :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+***** Salida                                                        :B_block:
+      :PROPERTIES:
+      :BEAMER_env: block
+      :END:
+  #+LATEX: \scriptsize
+  #+RESULTS: map 
+  : Primera vez
+  : 2
+  : 4
+  : 6
+  : Repetimos
+
+***** Posible solución                                 :B_exampleblock:BMCOL:
+      :PROPERTIES:
+      :BEAMER_env: exampleblock
+      :END:
+
+#+BEGIN_SRC python 
+pares = list(pares)
+#+END_SRC
+
+* Funciones y clases                                               
+
+** Funciones
+
+*** Funciones
+
+- Permiten no repetir el mismo código una y otra vez. 
+
+- Se hace una única vez y se repite.
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo                                           :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: fun1
+ #+BEGIN_SRC python :results output :exports both :session ses
+   def suma(lista):
+     sum = 0
+
+     for item in lista:
+       sum += item
+
+     return sum
+
+   print(suma([1, 3, 5]))
+   # Suma de 10 a 20
+   print(suma(range(10, 21)))
+   # Suma una sublista
+   lista = range(1, 101)
+   print(suma(lista[20:31]))
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.5
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: fun1
+ : 9
+ : 165
+ : 286
+
+** Sintaxis de las funciones
+
+*** Formato:
+
+#+BEGIN_SRC python
+  def nombreFuncion(parametros):
+    # Codigo
+    # return salida
+#+END_SRC
+
+*** Bloque
+ 
+La tabulación limita el código dentro de la función.
+
+*** Estructura
+
+- La función puede recibir parámetros.  
+
+- Puede devolver un valor mediante return, pero no es obligatorio.
+
+** Ejemplo de funciones
+
+*** Máximo y mínimo
+
+#+NAME: mymax
+#+BEGIN_SRC python :results output :exports both :session ses
+  def mymax(value1, value2):
+      if value1 >= value2:
+          return value1
+      else:
+          return value2
+
+  print(mymax(3, 5))
+  print(mymax(4, 2))
+  print(mymax(0, -2))
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: mymax
+: 5
+: 4
+: 0
+
+** Funciones que devuelven valores
+
+*** Funciones 
+
+Las más comunes son las que devuelven (/return algo/). 
+
+*** Función que devuelve                                     :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: addv
+#+BEGIN_SRC python :results output :exports both :session ses
+  def add_vector(vector1, vector2):
+      result = []
+
+      for item1, item2 in zip(vector1, vector2):
+          result.append(item1+item2)
+
+      return result
+
+
+  print(add_vector([1, 2, 3], [4, 2, 3]))
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: addv
+: [5, 4, 6]
+
+** Funciones que no devuelven valores
+
+*** Función que no devuelve                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: addv2
+#+BEGIN_SRC python :results output :exports both :session ses
+  def add_vector(vector1, vector2, result):
+      result.clear()
+
+      for item1, item2 in zip(vector1, vector2):
+          result.append(item1+item2)
+
+  result = []
+  print("Imprimimos lo que devuelve la funcion")
+  print(add_vector([1, 2, 3], [4, 2, 3], result))
+  print("Ahora la variable de salida")
+  print(result)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: addv2
+: Imprimimos lo que devuelve la funcion
+: None
+: Ahora la variable de salida
+: [5, 4, 6]
+
+
+** Paso de parámetros
+
+*** Columnas                                                :B_columns:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo con un entero                             :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: varint
+ #+BEGIN_SRC python :results output :exports both :session ses
+   def fun1(param):
+       print(param)
+       name = 4
+       print(param)
+
+   variable = 3
+   fun1(variable)
+   print(variable)
+ #+END_SRC
+ #+LATEX: \scriptsize
+ #+RESULTS: varint
+ : 3
+ : 4
+ : 3
+
+**** Ejemplo con lista                                 :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.5
+     :END:
+
+ #+NAME: varlist
+ #+BEGIN_SRC python :results output :exports both :session ses
+   def fun2(param):
+       print(param)
+       param.clear()
+       print(param)
+
+   variable = [3, 5, 7, 10]
+   fun2(variable)
+   print(variable)
+ #+END_SRC
+ #+LATEX: \scriptsize
+ #+RESULTS: varlist
+ : [3, 5, 7, 10]
+ : []
+ : []
+
+*** Diferencia
+
+- El parámetro /name/ apunta al mismo dato que la variable que se pasa en la
+  llamada (/variable/).
+
+- Cuando hace "name = ..." se le asigna un valor diferente, ya no son iguales.
+
+** Parámetros opcionales
+
+*** Parámetros opcionales
+
+- Las funciones pueden tener parámetros por defecto.
+
+#+NAME: fndef
+#+BEGIN_SRC python :results output :exports both :session ses
+  def increm(value, increm=10):
+      return value+increm
+
+  print(increm(3, 2))
+  print(increm(3, 10))
+  print(increm(3))
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fndef
+: 5
+: 13
+: 13
+
+*** Posición de los parámetros por defecto
+
+- Deben aparecer al final.
+
+- Si no fuese así, no quedaría claro cómo interpretarlo si hay varias.
+
+** Parámetros con nombre
+
+*** Parámetros con nombre
+
+No es necesario poner los parámetros en orden si se sabe su nombre.
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo: copia de vector                          :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.7
+     :END:
+
+ #+NAME: copiavect 
+ #+BEGIN_SRC python :results output :exports both :session ses
+   def mycopyvec(source, dest):
+       dest.clear()
+
+       # or dest.extend(source)
+       for elem in source:
+           dest.append(elem)
+
+   list1, list2 = [3, 4, 5], [2, 9, 7]
+   mycopyvec(list1, list2)
+   print("Lista1: ", list1)
+   print("Lista2: ", list2)
+   list1, list2 = [3, 4, 5], [2, 9, 7]
+   mycopyvec(dest=list1, source=list2)
+   print("Lista1: ", list1)
+   print("Lista2: ", list2)
+ #+END_SRC
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :BEAMER_env: block
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: copiavect
+ : Lista1:  [3, 4, 5]
+ : Lista2:  [3, 4, 5]
+ : Lista1:  [2, 9, 7]
+ : Lista2:  [2, 9, 7]
+
+
+
+* Clases                                                           
+
+** Clases
+
+*** Concepto de clases
+
+- En ciertos dominios requieren cierta información (Board). 
+
+- Se realiza una serie de operaciones con la información.
+
+- Por comodidad se puede agrupar juntas. 
+
+*** Si tenemos esto                                          :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+x = ...
+y = ...
+draw_board_battleship(x, y, size, fname_background, ...)
+x += 1
+draw_board_battleship(x, y, size, fname_background, ...)
+#+END_SRC
+
+*** Errores                                                    :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+- Para un simple concepto puede haber muchas variables.
+
+- Las funciones requieren muchos parámetros.
+
+** Clases
+
+*** Es la forma que Python agrupa información
+
+- Agrupa variables y funciones sobre dichos datos. 
+
+- Una instancia de la clase (variable) guarda esos datos como atributos.
+
+- No es necesario pasarle los datos, lo recoge de la variable.
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+board = Board(x, y, size)
+board.setBackground(fname_background)
+board.draw()
+board.move(inc_x=1)
+board.draw()
+#+END_SRC
+
+** Clases
+
+*** Python posee clases
+
+- Python tiene *clases* como C++ o Java.
+
+- No posee estructuras.
+
+- No exige su uso como Java.
+
+- Se combina con enfoque estructural cuando conviene.
+
+*** Modelo de clases de Python
+
+- Ofrece la misma funcionalidad que otros. 
+
+- Tiene sus particulares.
+
+  + No restricción de permisos.
+
+  + Convenios de nomenclatura.
+
+  + Propiedades.
+
+  + Métodos especiales: str, init, ...
+
+** Lo vemos por comparación
+
+*** Java
+#+BEGIN_SRC java
+  public class Point {
+      private int xCoord;
+      private int yCoord;
+
+      public Point() {
+          xCoord = yCoord = 0;
+      }
+      public Point( int x, int y ) {
+          xCoord = x;
+          yCoord = y;
+      }
+      public String toString() {
+          return "(" + xCoord + ", " + yCoord + ")";
+      }
+      public int getX() { return xCoord; }
+      public int getY() { return yCoord; }
+      public void shift( int xInc, int yInc ) {
+          xCoord = xCoord + xInc;
+          yCoord = yCoord + yInc;
+      }
+  }
+#+END_SRC
+
+** Lo vemos por comparación
+
+*** C++
+
+#+BEGIN_SRC c++
+  class Point {
+  private:
+        int xCoord;
+        int yCoord;
+
+  public:
+        Point() {
+          xCoord = yCoord = 0;
+        }
+        Point(int x, int y) {
+          xCoord = x;
+          yCoord = y;
+        }
+        int getX() { return xCoord; }
+        int getY() { return yCoord; }
+
+        void shift( int xInc, int yInc ) {
+          xCoord = xCoord + xInc;
+          yCoord = yCoord + yInc;
+        }
+  };
+#+END_SRC
+
+
+** Lo vemos por comparación
+
+*** Python
+
+#+BEGIN_SRC python :session ses :results output :exports code
+  class Point:
+
+     def __init__(self, x = 0, y = 0):
+        self.xCoord = x
+        self.yCoord = y
+
+     def __str__(self):
+        return "({},{})".format(self.xCoord, self.yCoord)
+
+     def getX(self):
+        return self.xCoord
+
+     def getY(self):
+        return self.yCoord
+
+     def shift(self, xInc, yInc):
+        self.xCoord += xInc
+        self.yCoord += yInc
+#+END_SRC
+
+#+RESULTS:
+
+** Peculiaridades de clases
+
+*** No límites de acceso
+
+- No hay límites de acceso.
+
+- Convenio: si empieza por "_" no es público, no se debe acceder.
+
+*** Definir atributos
+
+- No sección especial.
+
+- Se hace con *self.variable = ...* en el constructor.
+
+*** Métodos especiales:
+
+- __init__ :: Constructor.
+
+- __str__ :: Método para mostrar valores (conversión a cadena, ...).
+
+** Métodos en las clases
+
+*** Métodos:
+
+- Son funciones normales. 
+
+- Recibe como primer parámetro el propio objeto (self).
+
+- El objeto self se usa para acceder a los atributos/métodos.
+
+- Todo método siempre tiene algún parámetro.
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo de uso                                    :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.6
+     :END:
+
+ #+NAME: point
+ #+BEGIN_SRC python :results output :exports both :session ses
+   point = Point()
+   print(point)
+   point2 = Point(2, 3)
+   print(point2)
+   print(point2.getX())
+   point2.shift(1, -1)
+   print(point2)
+   # Acceso directo, no recomendado
+   point2.xCoord = 4
+   print(point2)
+ #+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.3
+     :END:
+  #+LATEX: \scriptsize
+  #+RESULTS: point
+  : (0,0)
+  : (2,3)
+  : 2
+  : (3,2)
+  : (4,2)
+
+
+
+** Herencia
+
+*** Clase base                                                      :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+
+#+NAME: polygon
+#+BEGIN_SRC python :results output :exports both :session ses
+    class Polygon:
+        def __init__(self, no_of_sides):
+            self.n = no_of_sides
+            self.sides = [Point(0,0) for i in range(self.n)]
+
+        def setPoint(self, i, x, y):
+            assert i >= 0 and i < self.n
+            self.sides[i] = Point(x, y)
+
+        def __str__(self):
+            return ", ".join([str(t) for t in self.sides])
+
+    a = Polygon(2)
+    a.setPoint(0, x=1, y=2)
+    a.setPoint(1, x=1, y=1)
+    print(a)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: polygon
+: (1,2), (1,1)
+
+** Herencia
+
+*** Clase heredada :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
+
+#+NAME: rectangle
+#+BEGIN_SRC python :results output :exports both :session ses
+  def copy(point, incX=0, incY=0):
+      return Point(point.getX()+incX, point.getY()+incY)
+
+  class Rectangle(Polygon):
+      def __init__(self, init, size):
+          Polygon.__init__(self, 5)
+          self.sides[0] = copy(init)
+          self.sides[1] = copy(init, incY=size)
+          self.sides[2] = copy(init, incX=size, incY=size)
+          self.sides[3] = copy(init, incX=size)
+          self.sides[4] = copy(init)
+
+  a = Rectangle(Point(0, 0), 3)
+  print(a)
+  a = Rectangle(Point(2, 2), 1)
+  print(a)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: rectangle
+: (0,0), (0,3), (3,3), (3,0), (0,0)
+: (2,2), (2,3), (3,3), (3,2), (2,2)
+
+** Propiedades
+
+*** Acceso a atributos
+
+- Python no suele usar métodos getX, setX. 
+
+- Se puede acceder directamente a los métodos.
+
+- ¿Y si se desea limitar? 
+
+*** Propiedades
+
+- Permite asignar método de asignación y consulta.
+
+- Es transparente.
+
+** Propiedades
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Ejemplo                                           :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.75
+     :BEAMER_env: exampleblock
+     :END:
+
+ #+NAME: celsius
+ #+BEGIN_SRC python :results output :exports both :session ses
+   class Temperature:
+       def __init__(self, temperature):
+           self.celsius = temperature
+
+       @property
+       def farenheit(self):
+           return self.celsius*1.8+32
+
+       @farenheit.setter
+       def farenheit(self, value):
+           self.celsius = (value-32)/1.8
+
+   temp = Temperature(30)
+   print(temp.celsius)
+   print(temp.farenheit)
+   temp.celsius = 40
+   print(temp.celsius)
+   print(temp.farenheit)
+   temp.farenheit = 100
+   print(temp.farenheit)
+   print(temp.celsius)
+ #+END_SRC
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.25
+     :END:
+ #+LATEX: \scriptsize
+ #+RESULTS: celsius
+ : 30
+ : 86.0
+ : 40
+ : 104.0
+ : 100.0
+ : 37.77777777777778
+
+* Librerías                                                        
+** Importando paquetes
+
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width .6\textwidth
+[[file:standing.png]]
+#+END_CENTER
+
+
+
+*** No tienes que hacer todo el código
+
+- Reutilizar código externo, librerías/paquetes.
+
+  + Funciones o clases que podemos usar.
+
+
+** Estructurando el código 
+
+*** Dividiendo el programa 
+
++ Podemos poner varias funciones en ficheros distintos. 
+
+  - Ej: utils.py, game.py, board.py, ...
+
++ Queremos usar esas funciones dentro de otros ficheros.
+
+*** Paquetes
+
+- Un paquete es un fichero (o varios) con funciones/clases. 
+
+- Puede ser usado en otros ficheros.
+
+*** Distinto caso
+
+- Librería externa :: Nombre único del paquete, identifica la librería.
+
+- Fichero local :: El nombre del paquete es el del fichero (sin .py). 
+
+** Conflicto de nombres
+
+*** Conflicto de nombres
+
+- Una misma función puede existir en varios paquetes.
+
+
+*** Import
+
+#+BEGIN_SRC python
+import package
+...
+package.fun(...)
+#+END_SRC
+
+*** Columnas                                                      :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Sin usar import :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: exampleblock
+     :BEAMER_col: 0.6
+     :END:
+
+ #+NAME: import1
+ #+BEGIN_SRC python :results output :exports both :session ses2
+ print(sqrt(9))
+ #+END_SRC
+ #+LATEX: \scriptsize
+ #+RESULTS: import1
+ : Traceback (most recent call last):
+ :   File "<stdin>", line 1, in <module>
+ : NameError: name 'sqrt' is not defined
+
+**** Con import                                        :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.4
+     :BEAMER_env: exampleblock
+     :END:
+ #+NAME: import2
+ #+BEGIN_SRC python :results output :exports both :session ses2
+ import math
+ print(math.sqrt(9))
+ #+END_SRC
+ #+LATEX: \scriptsize
+ #+RESULTS: import2
+ : 3.0
+
+** Otras opciones
+
+*** Indicar las funciones usadas de cada paquete
+from /package/ import /fun1/, /fun2/, ..., /funN/
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC python
+from math import sqrt
+print(sqrt(9))
+#+END_SRC
+
+*** ¿Y si hay muchas funciones?
+
+- Podría ser mejor usar paquete. \pause \Rightarrow ¿Y si no me gusta?
+\pause
+*** Uso de alias                                                  :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Uso de alias                                      :B_exampleblock:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.6
+     :BEAMER_env: exampleblock
+     :END:
+#+NAME: np
+#+BEGIN_SRC python :results output :exports both :session ses
+import numpy as np
+
+a = np.zeros(5)
+print(a)
+#+END_SRC
+
+**** Salida                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.3
+     :END:
+#+LATEX: \scriptsize
+#+RESULTS: np 
+: [ 0.  0.  0.  0.  0.]
+
+
+** Ejemplo local
+
+*** Fichero utils.py
+
+#+BEGIN_SRC python
+  def print_hello():
+    print("Hola")
+
+  def print_adios():
+    print("Adios")
+#+END_SRC
+
+*** Fichero main.py (mismo directorio)                       :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: main_hello
+#+BEGIN_SRC python :results output :exports both :session ses
+import utils
+
+utils.print_hello()
+print("Bla Bla Bla")
+utils.print_adios()
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: main_hello
+: Hola
+: Bla Bla Bla
+: Adios
+
+** Programa main
+
+*** Al hacer import se ejecuta el fichero
+
+- No es adecuado poner código fuera de las funciones.
+
+- Es conveniente una función *main*. 
+
+*** Función main                                             :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: main_fun
+#+BEGIN_SRC python :results output :exports both :session ses
+  def main():
+      print("Hola a todos")
+
+  if __name__ == "__main__":
+      main()
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: main_fun
+: Hola a todos
+
+*** Comentarios
+
+- La función puede tener cualquier nombre. 
+
+- Se garantiza que sólo se ejecuta como programa, no por un import.
+
+** Instalar paquetes
+
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width 0.453\textwidth
+[[file:box_python.png]]
+#+END_CENTER
+
+*** Instalación 
+
+- Python permite instalar muy fácilmente paquetes. 
+
+- Existe un repositorio oficial de paquetes: PyPI.
+
+- Pip :: programa para buscar/instalar/borrar paquetes (y sus dependencias).
+
+** Uso de Pip
+
+*** Buscar: search
+
+#+NAME: pip_search
+#+BEGIN_SRC sh :results output :exports both :session ses
+pip search cec2013lsgo
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: pip_search
+: cec2013lsgo (2.1)  - Package for benchmark for the Real ...
+:                      Evolutionary Computation CEC'2013
+:   INSTALLED: 2.0
+:   LATEST:    2.1
+
+*** Información: show
+
+#+NAME: show
+#+BEGIN_SRC sh :results output :exports both :session ses
+pip show cec2013lsgo
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: show
+: Name: cec2013lsgo
+: Version: 2.0
+: Summary: Package for benchmark for the Real ...
+: Home-page: https://github.com/dmolina/cec2013lsgo
+: Author: Daniel Molina
+: Author-email: dmolina@decsai.ugr.es
+: License: GPL V3
+: Location: /mnt/home/daniel/anaconda3/lib/python3.6/site-packages/...
+: Requires: cython, numpy
+
+** Uso de Pip
+
+*** Instalar: install 
+
+#+NAME: pip_install
+#+BEGIN_SRC sh :results output :exports both :session ses
+pip install numpy
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: pip_install
+: Requirement already satisfied: numpy in ...
+
+*** Borrar: uninstall
+
+#+NAME: pip_uninstall
+#+BEGIN_SRC sh :results output :exports both :session ses
+pip uninstall cec2013lsgo
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: pip_uninstall
+: Successfully uninstalled cec2013lsgo-2.0
+
+
+** Uso de pip y permisos
+
+*** ¿Y si no tengo permisos?
+
+Se puede instalar en el $HOME del usuario con:
+ 
+#+BEGIN_SRC sh 
+pip install numpy --user
+#+END_SRC
+
+*** Aviso                                                :B_alertblock:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :BEAMER_col: 0.8
+    :END:
+
+Es recomendable usarlo y no hacer "sudo pip".
+
+** Conflicto entre paquetes
+*** Posible situación
+
+- Paquete1 \Rightarrow v2.0 de Paquete4
+
+- Paquete3 \Rightarrow v3.0 de Paquete4
+
+*** ¿Como se puede resolver?
+
+- Se puede instalar las librerías en directorios distintos.
+  + Paquete1 y v2.0 de Paquete4 en uno. 
+  + Paquete3 y v3.0 de Paquete4 en otro.
+
+- Activar el entorno que queremos (usar las librerías de un directorio u otro).
+
+- Así además si la librería incluye ejecutable lo tendremos configurado.
+
+** Herramientas de entornos
+
+*** Conda 
+
+- Específico de Anaconda. 
+
+- No compatible con otros.
+
+*** pipenv 
+
+- Muy reciente (1 año y poco). 
+
+- Considerado el estándar.
+
+*** Otros (pyenv, venv)
+
+- Anteriores a pipenv.
+
+** Conflicto de paquetes: uso de conda
+
+*** conda
+
+- Ver los entornos :: conda env list. El actual está marcado con *.
+
+- Crear un entorno :: conda create -n /nombre/ [opciones].
+
+- Activar entorno :: source activate /nombre/. 
+
+- Desactivar entorno actual :: source deactivate.
+
+** Ejemplo de uso de conda
+
+*** Lista 
+#+NAME: condalist
+#+BEGIN_SRC sh :results output :exports both
+conda env list
+#+END_SRC
+
+*** Salida
+#+LATEX: \scriptsize
+#+RESULTS: condalist
+#+begin_example
+# conda environments:
+#
+base                  *  /mnt/home/daniel/anaconda3
+IA                       /mnt/home/daniel/anaconda3/envs/IA
+curso                    /mnt/home/daniel/anaconda3/envs/curso
+wcci2018                 /mnt/home/daniel/anaconda3/envs/wcci2018
+#+end_example
+
+** Uso de entorno
+
+*** Configurar paquetes (se indica en la shell)              :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC sh
+daniel@ubuntu:~/working$ source activate IA
+(IA) daniel@ubuntu:~/working$ pip install ...
+(IA) daniel@ubuntu:~/working$ source deactivate
+daniel@ubuntu:~/working$ 
+#+END_SRC
+
+*** Cargar programa usando el entorno (se indica en la shell) :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+BEGIN_SRC sh
+daniel@ubuntu:~/working$ source activate IA
+(IA) daniel@ubuntu:~/working$ python ...
+(IA) daniel@ubuntu:~/working$ source deactivate
+daniel@ubuntu:~/working$ 
+#+END_SRC
+
+** Herramienta de entorno: pipenv
+
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+\href{https://vimeo.com/233134524}{\includegraphics[width=\textwidth]{pipenv.png}}
+#+END_EXPORT
+#+END_CENTER
+
+* [#B] Otro                                                        :noexport:
+
+*** Ejemplo: distancia euclídea
+
+#+NAME: disteuc
+#+BEGIN_SRC python :results output :exports both :session ses
+  from math import sqrt
+
+  def distancia_euclidea(x1, y1, x2, y2):
+      return sqrt((x1-x2)**2+(y1-y2)**2)
+
+  print(distancia_euclidea(0, 0, 1, 1))
+  print(distancia_euclidea(0, 0, 1, 1))
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: disteuc
+: 1.4142135623730951
+
+
+https://docs.python.org/3/tutorial/introduction.html
