@@ -28,10 +28,6 @@
          nil "_"))))
 #+END_SRC
 
-#+RESULTS:
-: python-shell-completion-native-try
-
-
 * 
 #+BEGIN_EXPORT latex
 \begin{frame}
@@ -255,7 +251,7 @@ chmod a+x hello.py
 #+END_SRC
 #+LaTeX: \scriptsize
 #+RESULTS:
-: hola a todos
+: mayor que 0
 
 ** Ventajas de Python: Legibilidad
 
@@ -489,47 +485,37 @@ Readability counts.
 
 ** ¿Qué veremos?
 
-*** Día 1: Introducción
+*** Parte 1: Python y Sintaxis
 
-- Qué es y qué ofrece Python (Visto)
++ Qué es y qué ofrece Python (Visto)
 
-- Instalación de Python y entornos.
++ Instalación de Python y entornos.
 
-- Sintaxis de Python:
++ Sintaxis de Python:
 
   + Tipos de datos.
 
   + Condicionales y bloques.
 
-*** Día 2: Sintaxis de Python
+  + Bucles. 
 
-  - Bucles. 
+  + Manejo de listas e iteradores.
 
-  - Manejo de listas e iteradores.
+  + Definiendo funciones y clases.
 
-  - Definiendo funciones y clases.
+  + Instalando y usando librerías.
 
-  - Instalando y usando librerías.
+  + Trabajando con ficheros
 
 ** ¿Qué veremos?
 
+*** Parte 2: Uso de Python en distintos entornos
 
-*** Día 3: Comunicando con Python
++ Python en ciencia.
 
-+ Trabajando con ficheros.
++ Gráficos con Python.
 
-+ Acceso a datos desde Python.
-
-+ Comunicando por la red
-
-*** Día 4: Jugando con Python
-
-+ Gráficas con Python:
-  + Modificando imágenes en cola.
-  + Visualizando datos.
-
-+ Página web con Python:
-  + Servidor Flask.
++ Páginas web con Python.
 
 ** Bibliografía
 
@@ -664,7 +650,6 @@ python3 -m pip install jupyter
 #+attr_latex: :width .8\textwidth
 [[file:ipython.png]]
 
-
 ** Ejemplo de entornos (IPython/Jupyter notebook)
 
 #+attr_latex: :width .8\textwidth
@@ -743,6 +728,23 @@ file:tonny.png
 - PyCharm :: Versión community, módulos de pago.
 - PyDev :: Módulo de eclipse.
 
+
+** Ejemplo: PyCharm 
+
+*** Versiones
+
+- Community (y Educativa). 
+- Comercial. 
+
+*** Imagen                                                  :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width .8\textwidth
+[[file:pycharm.png]]
+#+END_CENTER
+
 * Empezando con Python      
 
 ** Empezando con Python
@@ -804,7 +806,10 @@ print(a+b)
 - Listas :: lista = [1, 2, 3]
 - Tabla hash :: datos = {'c': "cerrar", 'd': "delete"}
 
-*** Asignación                                                     
+*** Asignación                                     :B_ignoreheading:noexport:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
 
 #+BEGIN_SRC python :session ses :exports none :results none
 number = 3
@@ -822,7 +827,10 @@ datos = {'c': "cerrar", 'd': "delete"}
 - No hay que definir el tipo de una variable.
 - Una misma variable pueden tomar valores de distinto tipo (no recomendado).
 
-***  
+***  Ignore                                                 :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
 #+BEGIN_SRC python
 variable = 4
 variable = "hola"
@@ -1066,6 +1074,30 @@ print("Los siguientes son", lista2[1:])
   else:
     print("menor o igual que 5")
 #+END_SRC
+
+** ¿Y el switch?
+
+*** No tiene switch
+
+- Tiene muchas limitaciones en otros lenguajes.
+
+- tiene el *elif*. 
+
+*** Ejemplo                                                  :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+
+#+NAME: elif
+#+BEGIN_SRC python :results output :exports code :session ses
+  if number > 0: 
+    print("mayor que 0")
+  elif number > 5:
+    print("mayor que 5")
+  else:
+    print("menor o igual que 5")
+#+END_SRC
+
 * Listas                                                           
 #+LaTeX: \part{2}
 
