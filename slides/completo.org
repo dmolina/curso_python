@@ -2050,7 +2050,7 @@ No es necesario poner los parámetros en orden si se sabe su nombre.
 
 
 
-* Clases                                                           
+* [#B] Clases                                                           
 
 ** Clases
 
