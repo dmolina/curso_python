@@ -2802,6 +2802,240 @@ daniel@ubuntu:~/working$
 #+END_EXPORT
 #+END_CENTER
 
+
+* Uso de ficheros 
+
+** Uso de ficheros
+
+*** Un programa no está solo en el sistema
+
+- Tiene que comunicarse. 
+
+- La forma primordial es usando ficheros.
+
+*** Dos formas de interactuar
+
+- Leer y escribir ficheros.
+
+- Conocer la estructura de ficheros/directorios del ordenador. 
+
+** Uso de ficheros con Python
+
+*** Sentencia with
+
+- Uso de *with* para abrir ficheros.
+
+- Permite agrupar el código y no preocuparse de cerrar fichero.
+
+*** Mayor sencillez 
+
+- Alternativa librería os.path \Rightarrow libpath.
+
+- Uso de print para escribir en ficheros.
+
+** Sentencia with
+
+*** Sentencia with
+
+- Uso de *with* para abrir ficheros.
+
+- Permite agrupar el código y no preocuparse de cerrar fichero.
+
+*** Código                                                   :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+BEGIN_SRC python :results output :exports  :session ses
+  # No es necesario cerrarlo, file es local para el bloque
+  with open("salida.txt", "w") as file:
+      print("Hola a todos", file=file)
+      print("Hasta luego", file=file)
+#+END_SRC
+
+#+RESULTS:
+
+*** ¿Qué hace?
+
+1. Crea la variable /file/ asociada al nuevo fichero "salida.txt".
+
+2. Escribe un mensaje usando la variable /file/.
+
+3. Al terminar el bloque el fichero se cierra.
+
+** Cierre automático del fichero
+
+*** Ejemplo incorrecto
+
+#+NAME: errorfile
+#+BEGIN_SRC python :results output :exports both :session ses
+  # No es necesario cerrarlo, file es local para el bloque
+  with open("salida.txt", "w") as file:
+      print("Hola a todos", file=file)
+
+  print("Otro mensaje", file=file)
+#+END_SRC
+
+*** Da error                                                   :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+#+LATEX: \scriptsize
+#+RESULTS: errorfile
+: Traceback (most recent call last):
+:   File "<stdin>", line 1, in <module>
+:   File "/tmp/babel-1017136Z/python-10171jGE", line 5, in <module>
+:     print("Otro mensaje", file=file)
+: ValueError: I/O operation on closed file.
+
+** Modos de open
+
+Puede contener como parámetro una cadena "/modo/" o "/modotipo/, en donde:
+
+*** Modos de fichero
+
+- r (por defecto) :: Abrirlo para leer, si no existe lanza excepción.
+
+- w :: Abrirlo para escribir, si existe lo borra antes.
+
+- a :: Abrirlo para escribir, si existe añade al final.
+
+*** Tipo de fichero
+
+- t (Por defecto) :: Fichero de texto.
+
+- b :: Fichero binario.
+
+*** Ejemplo
+
+#+BEGIN_SRC python
+open(fname, "r") # Abre para leer
+open(fname, "wb") # Escribe fichero binario
+open(fname, "a") # Concatena uno de texto
+#+END_SRC
+
+** Escribiendo fichero binario
+
+***  Leyendo: read(longitud)
+
+#+NAME: readb
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("completo.pdf", "rb") as file:
+      head = file.read(22)
+      print(head)
+      second = file.read(5)
+      print(second)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: readb
+: b'%PDF-1.5\n%\xd0\xd4\xc5\xd8\n17 0 ob'
+: b'j\n<<\n'
+
+*** Escribiendo: write(buffer)
+
+#+NAME: writeb
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("completo.pdf", "rb") as finput:
+      with open("copia.pdf", "wb") as foutput:
+
+          buffer = finput.read(1024)
+ 
+          while buffer:
+              second = foutput.write(buffer)
+              buffer = finput.read(1024)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: writeb
+
+** Fichero de texto: leer
+
+*** readline: Lee una línea
+
+#+NAME: fread1
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+    line = file.readline()
+    print("Linea 1:", line)
+    print("Linea 1:", line.rstrip())
+    line = file.readline()
+    print("Linea 2:", line)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fread1
+: Linea 1: Hola a todos
+: 
+: Linea 1: Hola a todos
+: Linea 2: Hasta luego
+
+*** readlines: Lee todo el fichero de golpe
+
+#+NAME: fread2
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+    lines = file.readlines()
+    print("Lineas:", lines)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fread2
+: Lineas: ['Hola a todos\n', 'Hasta luego\n']
+
+** Fichero de texto: iteración
+
+*** Iterar un fichero da las líneas
+
+#+NAME: fiter
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+      for line in file:
+          print(line)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fiter
+: Hola a todos
+: 
+: Hasta luego
+
+*** Cuidado con los retornos de carro                          :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+#+NAME: fiter2
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+      for line in file:
+          print(line.rstrip())
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fiter2
+: Hola a todos
+: Hasta luego
+
+** Fichero de texto: escribir
+
+*** Usar write
+
+#+NAME: fwritet
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt", "a") as fout:
+      fout.write("Nueva linea\n")
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fwritet
+
+*** Uso de print
+
+- print puede escribir.
+
+#+NAME: fprint1
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt", "a") as fout:
+      print("Otra linea", file=fout)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fprint1
+
+
+
 * [#B] Otro                                                        :noexport:
 
 *** Ejemplo: distancia euclídea
