@@ -1,0 +1,485 @@
+#+title: Casos de uso de Python
+#+author: Daniel Molina Cabrera
+#+date: Curso de Python (Abril 2018)
+#+latex_class: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed]
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \lstset{escapeinside={'}{'},basicstyle=\scriptsize\ttfamily,showspace=false}
+#+BEAMER_THEME: ucadoc
+#+options: H:2 ^:nil toc:nil
+#+SELECT_TAGS: available
+#+EXCLUDE_TAGS: noexport
+#+LaTeX: \AtBeginSection[]{ \begin{frame}{Índice}     \tableofcontents[currentsection]     \end{frame} }
+#+PROPERTY: header-args :eval never-export
+* Ignore                                                           :noexport:
+#+BEGIN_SRC elisp :exports none
+  (setq org-latex-listings 'listing)
+  (setq org-latex-prefer-user-labels t)
+  ;; Avoid error with 25.1.x
+  (with-eval-after-load 'python
+    (defun python-shell-completion-native-try ()
+      "Return non-nil if can trigger native completion."
+      (let ((python-shell-completion-native-enable t)
+            (python-shell-completion-native-output-timeout
+             python-shell-completion-native-try-output-timeout))
+        (python-shell-completion-native-get-completions
+         (get-buffer-process (current-buffer))
+         nil "_"))))
+#+END_SRC
+
+#+RESULTS:
+: python-shell-completion-native-try
+
+* 
+
+** Casos de uso de Python
+
+#+BEGIN_CENTER
+#+attr_latex: :width .7\textwidth
+[[file:when.png]]
+#+END_CENTER
+
+
+*** Columnas :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+**** Imagen                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+     :LOGBOOK:
+     CLOCK: [2018-04-19 Thu 19:13]
+     :END:
+
+
+#+BEGIN_CENTER
+#+attr_latex: :width \textwidth
+[[file:python_inside.jpg]]
+#+END_CENTER
+
+
+**** Qué veremos                                                      :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :END:
+
+***** Qué veremos :B_block:
+      :PROPERTIES:
+      :BEAMER_env: block
+      :END:
+
+- Áreas donde Python aporta.
+
+- Librerías recomendadas.
+
+** Áreas que veremos
+
+   #+BEGIN_CENTER
+   #+attr_latex: :width .6\textwidth
+[[file:sciencevsweb.png]]
+   #+END_CENTER
+
+*** Columnas :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Ciencia                                                  :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :BEAMER_env: block
+     :END:
+
+- Cálculo: Numpy, Pandas.
+
+- Visualización. 
+
+**** Programación web :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.5
+     :BEAMER_env: block
+     :END:
+
+- Backend: Django, Flask. 
+
+
+* Python para la ciencia 
+
+** Python para la ciencia 
+  #+BEGIN_CENTER
+  #+attr_latex: :width 0.6\textwidth
+  [[file:python_science.png]]
+  #+END_CENTER
+
+*** Python para la ciencia
+
+- Python se usa mucho para la ciencia de datos[fn:1].
+
+- Gran parte de su comunidad son científicos, no informáticos.
+
+*** Footnotes
+
+
+
+[fn:1] http://awahid.net/blog/data-science-with-python-or-java/
+
+
+** ¿Qué aporta Python en la ciencia?
+
+*** Ventajas
+
+- Lenguaje fácil de usar para no informáticos. 
+
+- Comunidad amigable.
+
+- Librerías científicas avanzadas fáciles de usar. 
+
+- Entorno desarrollo estable. 
+
+- Paralelismo.  
+
+** Utilidad de Python
+
+Utilidad en proceso científico [fn:3] 
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+\includegraphics<1>[width=.6\textwidth]{fases.png}
+\includegraphics<2>[width=.6\textwidth]{python_fases.png}
+#+END_EXPORT
+#+END_CENTER
+
+[fn:3] https://www.slideshare.net/marcelcaraciolo/computao-cientfica-com-python-numpy-e-scipy
+
+
+** Uso de Python
+
+#+BEGIN_CENTER
+#+attr_latex: :width 0.7\textwidth
+[[file:numpy_grown.png]]
+#+END_CENTER
+
+** Rendimiento de Python
+
+*** ¿Pero Python no era lento? 
+
+Python por defecto sí[fn:2]
+
+#+caption: Tiempo de un benchmark (s)
+|---------------------+-------------|
+| Versión             | Tiempo (ms) |
+|---------------------+-------------|
+| Python puro         |         183 |
+| Numpy               |        5.97 |
+| Cython normal       |        7.76 |
+| Cython optimizado   |        2.18 |
+| Cython llamando a C |        2.22 |
+|---------------------+-------------|
+
+[fn:2]
+https://arogozhnikov.github.io/2015/01/06/benchmarks-of-speed-numpy-vs-all.html
+
+
+** Rendimiento de Python
+
+*** ¿Pero Python no era lento?[fn:3]
+
+#+caption: tiempo matriz de distancias
+|-------------+----------|
+| Versión     | Tiempo   |
+|-------------+----------|
+| Python      | 9.51 seg |
+| Naive numpy | 64.7 ms  |
+| Numba       | 6.72 ms  |
+| Cython      | 6.57 ms  |
+| Parakeet    | 12.3 ms  |
+| Cython      | 6.57 ms  |
+|-------------+----------|
+
+*** Texto :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+[fn:3] https://arogozhnikov.github.io/2015/01/06/benchmarks-of-speed-numpy-vs-all.html
+
+** Rendimiento en Python
+
+- Procesar 1 GB de datos de Datos (1936 variables y 145232 filas). 
+
+- Comparando Python vs Scala (Java)[fn:4].
+
+*** Usando Spark
+|-------+---------+--------|
+| Nodos | Versión | Tiempo |
+|-------+---------+--------|
+|     3 | Scala   | 250 s  |
+|     3 | Python  | 246 s  |
+|-------+---------+--------|
+
+[fn:4] https://stackoverflow.com/questions/32464122/spark-performance-for-scala-vs-python
+
+** Rendimiento en Python
+
+*** Hay distintas alternativas
+
+- Librería numpy :: Equivalente a Matlab, optimizable con BLAS.
+
+- PyPy :: Intérprete JIT, en migración a Python3.
+
+- Cython :: Python compilado a C (Python + tipos). 
+
+- Numba :: Compilación JIT. 
+
+*** Y en paralelo
+
+- Paralelismo fácil :: Clusters, snakemake, Luigi.
+
+- Librerías paralelas :: Dask.
+
+- Big Data :: pyspark.
+
+- Librerías en GPU :: PyCUDA, PyTorch.
+
+** Caso de ejemplo: Numpy + Pandas
+
+
+   #+BEGIN_CENTER
+   #+attr_latex: :width .7\textwidth
+   [[file:python_numpy.png]]
+   #+END_CENTER
+
+*** Numpy
+
+- Librería matricial potente. 
+
+- Pandas, leer tablas de datos.
+
+** Pandas
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+{\Huge{\color{blue}\textbf{
+#+END_EXPORT
+[[https://pandas.pydata.org/pandas-docs/stable/10min.html][Tutorial de Pandas]]
+#+BEGIN_EXPORT latex
+}}}
+#+END_EXPORT
+#+END_CENTER
+
+** Visualizando [fn:5]
+   
+*** Múltiples librerías
+
+- Matplotlib :: Librería por defecto, basada en Matlab.
+
+- Seaborn :: Sobre matplotlib, estilos. 
+
+- Pandas :: Directamente.
+
+- Bokeh :: Gráficas webs. 
+
+- Holoviews :: Sobre Bokeh, mayor nivel abstracción. 
+
+- Altair :: Enfoque declarativo, web, en desarrollo.
+
+[fn:5] https://bit.ly/2sUHcJu
+
+** Visualizando 
+
+*** ¿Qué aporta?                                               :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+- Excel ya me permite hacer gráficas. 
+- Excel ya gestiona tablas. 
+
+*** Qué ofrece Python
+
+- Obtener datos de fuentes distintas
+
+- Análisis de datos visualmente
+
+- Diagramas interactivos
+
+
+** Qué ofrece Python
+
+*** Obtener datos de fuentes distintas
+  + Redes sociales.
+  + Páginas webs (/web scraping/).
+  + Otros recursos (Bases de Datos, ...). 
+
+*** Análisis de datos visualmente
+
+- Interactivo: Notebook.
+
+- Forma declarativa.
+
+*** Diagramas interactivos
+
++ Explorar datos.
++ Panel de control interactivo.
+
+
+** Ejemplo: Caso de estudio
+
+***  Vamos a ver un ejemplo
+
+- Altair :: Librería en contrucción declarativa.
+
+- Objetivo :: Explorar tiempo de Seattle.
+
+*** Datos
+
+#+name: seatle
+#+BEGIN_SRC python :results output :exports both :session ses
+df.head()
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: seatle
+#+BEGIN_SRC sh
+  date        precipitation  temp_max  temp_min  wind  weather
+  2012-01-01            0.0      12.8       5.0   4.7  drizzle
+  2012-01-02           10.9      10.6       2.8   4.5     rain
+  2012-01-03            0.8      11.7       7.2   2.3     rain
+  2012-01-04           20.3      12.2       5.6   4.7     rain
+  2012-01-05            1.3       8.9       2.8   6.1     rain
+#+END_SRC
+
+** Contar las precipitaciones
+
+*** Código
+#+BEGIN_CENTER
+#+BEGIN_SRC python
+alt.Chart(df).mark_bar().encode(
+    alt.X("precipitation", bin=True),
+    alt.Y("count()")
+)
+#+END_SRC
+#+END_CENTER
+*** Imagen :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+attr_latex: :width 0.6\textwidth
+[[file:seattle1.png]]
+#+END_CENTER
+
+** Precipitaciones por mes
+
+*** Código
+#+BEGIN_CENTER
+#+BEGIN_SRC python
+alt.Chart(df).mark_line().encode(
+    alt.X("date:T", timeUnit="month"),
+    alt.Y("average(precipitation)")
+)
+#+END_SRC
+#+END_CENTER
+*** Imagen :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+attr_latex: :width 0.6\textwidth
+[[file:seattle2.png]]
+#+END_CENTER
+
+** Precipitaciones por año y mes
+
+*** Código
+#+BEGIN_CENTER
+#+BEGIN_SRC python
+alt.Chart(df).mark_line().encode(
+    alt.X("date:T", timeUnit="yearmonth"),
+    alt.Y("max(temp_max)"),
+)
+#+END_SRC
+#+END_CENTER
+*** Imagen :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+attr_latex: :width 0.6\textwidth
+[[file:seattle3.png]]
+#+END_CENTER
+
+** Calentamiento por año
+
+*** Código
+#+BEGIN_CENTER
+#+BEGIN_SRC python
+alt.Chart(df).mark_line().encode(
+    alt.X("date:T", timeUnit="year"),
+    alt.Y("mean(temp_max)"),
+)
+#+END_SRC
+#+END_CENTER
+*** Imagen :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+attr_latex: :width 0.6\textwidth
+[[file:seattle4.png]]
+#+END_CENTER
+
+** Tipo de día
+
+*** Código
+#+BEGIN_CENTER
+#+BEGIN_SRC python
+  alt.Chart(df).mark_bar().encode(
+      x=alt.X("date:N", timeUnit="month"),
+      y="count()", color=alt.Color("weather",
+      legend=alt.Legend(title="Weather type"), scale=scale),
+  )
+#+END_SRC
+#+END_CENTER
+*** Imagen :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+#+BEGIN_CENTER
+#+attr_latex: :width 0.5\textwidth
+[[file:seattle5.png]]
+#+END_CENTER
+
+
+** Demo de diagrama interactivo
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+\href{https://demo.bokehplots.com/apps/stocks}{\includegraphics[width=0.8\textwidth]{./bokeh_demo1.png}}
+#+END_EXPORT
+#+END_CENTER
+
+** Demo de diagrama interactivo
+
+#+BEGIN_CENTER
+#+BEGIN_EXPORT latex
+\href{https://demo.bokehplots.com/apps/gapminder}{\includegraphics[width=0.8\textwidth]{./bokeh_demo2.png}}
+#+END_EXPORT
+#+END_CENTER
+
+
+
+
+
+** Otras librerías imprescindibles
+
+** Dask
+*** 
+
+* Python y la programación web
+
+** Web Scraping
+
+
+
+* Comunicaciones con Python
+
