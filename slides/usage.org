@@ -10,7 +10,7 @@
 #+options: H:2 ^:nil toc:nil
 #+SELECT_TAGS: available
 #+EXCLUDE_TAGS: noexport
-#+LaTeX: \AtBeginSection[]{ \begin{frame}{Índice}     \tableofcontents[currentsection]     \end{frame} }
+#+LaTeX: \AtBeginSection[]{ \begin{frame}{Índice}     \tableofcontents     \end{frame} }
 #+PROPERTY: header-args :eval never-export
 * Ignore                                                           :noexport:
 #+BEGIN_SRC elisp :exports none
@@ -31,9 +31,9 @@
 #+RESULTS:
 : python-shell-completion-native-try
 
-* 
-
-** Casos de uso de Python
+*                                                                  
+   
+** Casos de uso de Python                                        
 
 #+BEGIN_CENTER
 #+attr_latex: :width .7\textwidth
@@ -45,24 +45,20 @@
     :PROPERTIES:
     :BEAMER_env: columns
     :END:
-**** Imagen                                                           :BMCOL:
-     :PROPERTIES:
-     :BEAMER_col: 0.5
-     :END:
-     :LOGBOOK:
-     CLOCK: [2018-04-19 Thu 19:13]
-     :END:
 
+
+**** Imagen                                                         :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.4
+     :END:
 
 #+BEGIN_CENTER
 #+attr_latex: :width \textwidth
 [[file:python_inside.jpg]]
 #+END_CENTER
-
-
 **** Qué veremos                                                      :BMCOL:
      :PROPERTIES:
-     :BEAMER_col: 0.5
+     :BEAMER_col: 0.6
      :END:
 
 ***** Qué veremos :B_block:
@@ -74,7 +70,7 @@
 
 - Librerías recomendadas.
 
-** Áreas que veremos
+** Áreas que veremos                                              
 
    #+BEGIN_CENTER
    #+attr_latex: :width .6\textwidth
@@ -104,8 +100,8 @@
 
 - Backend: Django, Flask. 
 
-
-* Python para la ciencia 
+  
+* Python para la ciencia                                           :noexport:
 
 ** Python para la ciencia 
   #+BEGIN_CENTER
@@ -205,9 +201,10 @@ https://arogozhnikov.github.io/2015/01/06/benchmarks-of-speed-numpy-vs-all.html
 
 ** Rendimiento en Python
 
-- Procesar 1 GB de datos de Datos (1936 variables y 145232 filas). 
+- Procesar 1 GB de datos de Datos 
+  + 145.232 filas y 1.936 variables.
 
-- Comparando Python vs Scala (Java)[fn:4].
+- Comparando Python vs Scala (Java)[fn:4]:
 
 *** Usando Spark
 |-------+---------+--------|
@@ -477,9 +474,88 @@ alt.Chart(df).mark_line().encode(
 
 * Python y la programación web
 
+** Python y la programación web
+
+*** Columnas :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Django                                                           :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+
+#+BEGIN_CENTER
+#+attr_latex: :width \textwidth
+[[file:django.png]]
+#+END_CENTER
+**** Django                                                   :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.7
+     :END:
+
+ - Entorno web Python más popular.
+
+ - Inspirado en *Rails* pero más explícito. 
+
+ - Muy integrado.
+
+*** Columnas :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :END:
+
+**** Logo                                                             :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: 0.3
+     :END:
+
+
+#+BEGIN_CENTER
+#+attr_latex: :width \textwidth
+[[file:flask.png]]
+#+END_CENTER
+**** Flask                                                    :B_block:BMCOL:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :BEAMER_col: 0.7
+     :END:
+
+- Entorno web más sencillo. 
+
+- Menos funcionalidad, extensible.
+
+- Menos funcionalidad.  
+
+
+** Programa en Flask
+
+*** Ejemplo: hello world :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+BEGIN_SRC python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+if __name__ == "__main__":
+    app.run()
+#+END_SRC
+
+*** Ejecutándolo
+
+#+BEGIN_SRC sh
+$ python ejemplos/web.py
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+#+END_SRC
+
+#+RESULTS:
+
 ** Web Scraping
-
-
-
-* Comunicaciones con Python
 
