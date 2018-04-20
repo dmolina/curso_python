@@ -551,8 +551,7 @@ file:cover_automate.png
  - http://www.diveintopython.net/
  - https://automatetheboringstuff.com/
 
-* DONE Instalando Python y Entornos                                     
-  CLOSED: [2018-04-18 Wed 23:34]
+* Instalando Python y Entornos                                     
 
 ** Instalando Python
 
@@ -2650,6 +2649,161 @@ open(fname, "a") # Concatena uno de texto
 #+END_SRC
 #+LATEX: \scriptsize
 #+RESULTS: fprint1
+
+** Trabajando con ficheros
+
+*** No todo es with
+
+- No todo es escribir y leer ficheros
+
+*** Es necesario trabajar con ficheros
+
+- Listas ficheros. 
+
+- Gestionar directorios.
+
+- Gestionar ficheros: borrar, renombrar, ...
+
+** Trabajando con ficheros
+
+*** os.system
+
+Permite ejecutar una orden del SO.
+
+*** Ejemplo con system :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+name: system
+#+BEGIN_SRC python :results output :exports both :session ses
+import os
+os.system("ls *.pdf")
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: system
+: completo.pdf  copia.pdf  usage.pdf
+
+*** Cuidado :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
++ *os.system* no es /portable/ entre SOs.
+
++ Hay otras alternativas /portables/.
+
+** Listar ficheros
+
+*** Listar
+
+- glob(pattern) :: Permite buscar ficheros usando *.
+
+- os.listdir(dir) :: Lista un directorio.
+
+*** Ejemplo :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+name: glob
+#+BEGIN_SRC python :results output :exports both :session ses
+import os, glob
+pdfs = glob.glob("*.pdf")
+pdfs2 = [dir for dir in os.listdir('.') if ".pdf" in dir]
+print(pdfs)
+print(pdfs2)
+#+END_SRC 
+#+LaTeX: \scriptsize
+#+RESULTS: glob
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+
+** Trabajar con directorios
+
+*** Editar directorios
+
+- os.mkdir(dir) :: Crear directorio.
+- os.chdir(dir) :: Cambiar de directorio.
+- os.curdir :: Directorio actual.
+- os.rmdir(dir) :: Borrar directorio.
+
+*** Editar ficheros
+
+- os.remove(fname) :: Borra fichero.
+- os.rename(fold, fnew) :: Cambiar el nombre de directorio.
+- shutil.copy(origen, destino) :: Copiar fichero o directorio.
+- shutil.rmtree(dir) :: Borra directorio (cuidado).
+
+** Librería pathlib
+
+*** Nuevo interfaz
+
+- Clase Path con muchos métodos.
+
+- Totalmente independiente del SO.
+
+*** Ejemplo
+
+#+name: pathlib
+#+BEGIN_SRC python :results output :exports both :session ses
+  import pathlib
+  dir = pathlib.Path('.')
+  files = [file.name for file in dir.glob("*.pdf")]
+  print(files)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: pathlib
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+
+** Acceso a ficheros desde libpath
+
+*** Ejemplo
+#+name: libpath2
+#+BEGIN_SRC python :results output :exports both :session ses
+
+  from pathlib import Path
+  dir = Path('.')
+  file = dir / "usage.pdf"
+
+  if file.exists():
+    if file.is_dir():
+      print(file.name, "es un directorio")
+    else:
+      print(file.name, "es un fichero")
+      file.
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: libpath2
+: usage.pdf es un fichero
+
+** Trabajando con libpath
+
+*** Cambiando jpg -> jpeg
+
+#+name: jpeg2
+#+BEGIN_SRC python :results output :exports both :session ses
+  import pathlib
+  dir = pathlib.Path('.')
+  subdirs = [x for x in dir.iterdir() if x.is_dir()]
+  print(subdirs)
+
+  dir = Path('.') / 'borra'
+  print(dir.resolve())
+
+
+  if dir.exists():
+      files = list(dir.glob("*.jpeg"))
+
+      for file in files:
+          new_fname = str(file).replace(".jpeg", ".jpg")
+          file.rename(new_fname)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: jpeg2
+#+begin_example
+[PosixPath('auto'), PosixPath('borra'), PosixPath('notebooks')]
+/mnt/home/daniel/working/docencia/ceuta/201718/curso_python/slides/borra
+#+end_example
+
 
 * Librerías                                                        
 ** Importando paquetes
