@@ -5,6 +5,7 @@
 #+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed]
 #+LATEX_HEADER: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \titlegraphic{\includegraphics{ccbysa.png}}
 #+LATEX_HEADER: \lstset{escapeinside={'}{'},basicstyle=\scriptsize\ttfamily,showspace=false}
 #+BEAMER_THEME: ucadoc
 #+options: H:2 ^:nil toc:nil
