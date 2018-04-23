@@ -5,6 +5,7 @@
 #+LaTeX_CLASS_OPTIONS: [bigger,unknownkeysallowed]
 #+LATEX_HEADER: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \titlegraphic{\includegraphics{ccbysa.png}}
 #+LATEX_HEADER: \lstset{escapeinside={'}{'},basicstyle=\scriptsize\ttfamily,showspace=false}
 #+LATEX_HEADER: %\usepackage{ccicons}
 #+BEAMER_THEME: ucadoc
@@ -2419,392 +2420,6 @@ board.draw()
  : 37.77777777777778
 
 
-* Uso de ficheros 
-
-** Uso de ficheros
-
-*** Un programa no está solo en el sistema
-
-- Tiene que comunicarse. 
-
-- La forma primordial es usando ficheros.
-
-*** Dos formas de interactuar
-
-- Leer y escribir ficheros.
-
-- Conocer la estructura de ficheros/directorios del ordenador. 
-
-** Uso de ficheros con Python
-
-*** Sentencia with
-
-- Uso de *with* para abrir ficheros.
-
-- Permite agrupar el código y no preocuparse de cerrar fichero.
-
-*** Mayor sencillez 
-
-- Alternativa librería os.path \Rightarrow libpath.
-
-- Uso de print para escribir en ficheros.
-
-** Sentencia with
-
-*** Sentencia with
-
-- Uso de *with* para abrir ficheros.
-
-- Permite agrupar el código y no preocuparse de cerrar fichero.
-
-*** Código                                                   :B_exampleblock:
-    :PROPERTIES:
-    :BEAMER_env: exampleblock
-    :END:
-#+BEGIN_SRC python :results output :exports  :session ses
-  # No es necesario cerrarlo, file es local para el bloque
-  with open("salida.txt", "w") as file:
-      print("Hola a todos", file=file)
-      print("Hasta luego", file=file)
-#+END_SRC
-
-#+RESULTS:
-
-*** ¿Qué hace?
-
-1. Crea la variable /file/ asociada al nuevo fichero "salida.txt".
-
-2. Escribe un mensaje usando la variable /file/.
-
-3. Al terminar el bloque el fichero se cierra.
-
-** Cierre automático del fichero
-
-*** Ejemplo incorrecto
-
-#+NAME: errorfile
-#+BEGIN_SRC python :results output :exports both :session ses
-  # No es necesario cerrarlo, file es local para el bloque
-  with open("salida.txt", "w") as file:
-      print("Hola a todos", file=file)
-
-  print("Otro mensaje", file=file)
-#+END_SRC
-
-*** Da error                                                   :B_alertblock:
-    :PROPERTIES:
-    :BEAMER_env: alertblock
-    :END:
-#+LATEX: \scriptsize
-#+RESULTS: errorfile
-: Traceback (most recent call last):
-:   File "<stdin>", line 1, in <module>
-:   File "/tmp/babel-1017136Z/python-10171jGE", line 5, in <module>
-:     print("Otro mensaje", file=file)
-: ValueError: I/O operation on closed file.
-
-** Modos de open
-
-Puede contener como parámetro una cadena "/modo/" o "/modotipo/, en donde:
-
-*** Modos de fichero
-
-- r (por defecto) :: Abrirlo para leer, si no existe lanza excepción.
-
-- w :: Abrirlo para escribir, si existe lo borra antes.
-
-- a :: Abrirlo para escribir, si existe añade al final.
-
-*** Tipo de fichero
-
-- t (Por defecto) :: Fichero de texto.
-
-- b :: Fichero binario.
-
-*** Ejemplo
-
-#+BEGIN_SRC python
-open(fname, "r") # Abre para leer
-open(fname, "wb") # Escribe fichero binario
-open(fname, "a") # Concatena uno de texto
-#+END_SRC
-
-** Escribiendo fichero binario
-
-***  Leyendo: read(longitud)
-
-#+NAME: readb
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("completo.pdf", "rb") as file:
-      head = file.read(22)
-      print(head)
-      second = file.read(5)
-      print(second)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: readb
-: b'%PDF-1.5\n%\xd0\xd4\xc5\xd8\n17 0 ob'
-: b'j\n<<\n'
-
-*** Escribiendo: write(buffer)
-
-#+NAME: writeb
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("completo.pdf", "rb") as finput:
-      with open("copia.pdf", "wb") as foutput:
-
-          buffer = finput.read(1024)
- 
-          while buffer:
-              second = foutput.write(buffer)
-              buffer = finput.read(1024)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: writeb
-
-** Fichero de texto: leer
-
-*** readline: Lee una línea
-
-#+NAME: fread1
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt") as file:
-    line = file.readline()
-    print("Linea 1:", line)
-    print("Linea 1:", line.rstrip())
-    line = file.readline()
-    print("Linea 2:", line)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fread1
-: Linea 1: Hola a todos
-: 
-: Linea 1: Hola a todos
-: Linea 2: Hasta luego
-
-*** readlines: Lee todo el fichero de golpe
-
-#+NAME: fread2
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt") as file:
-    lines = file.readlines()
-    print("Lineas:", lines)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fread2
-: Lineas: ['Hola a todos\n', 'Hasta luego\n']
-
-** Fichero de texto: iteración
-
-*** Iterar un fichero da las líneas
-
-#+NAME: fiter
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt") as file:
-      for line in file:
-          print(line)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fiter
-: Hola a todos
-: 
-: Hasta luego
-
-*** Cuidado con los retornos de carro                          :B_alertblock:
-    :PROPERTIES:
-    :BEAMER_env: alertblock
-    :END:
-
-#+NAME: fiter2
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt") as file:
-      for line in file:
-          print(line.rstrip())
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fiter2
-: Hola a todos
-: Hasta luego
-
-** Fichero de texto: escribir
-
-*** Usar write
-
-#+NAME: fwritet
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt", "a") as fout:
-      fout.write("Nueva linea\n")
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fwritet
-
-*** Uso de print
-
-- print puede escribir.
-
-#+NAME: fprint1
-#+BEGIN_SRC python :results output :exports both :session ses
-  with open("salida.txt", "a") as fout:
-      print("Otra linea", file=fout)
-#+END_SRC
-#+LATEX: \scriptsize
-#+RESULTS: fprint1
-
-** Trabajando con ficheros
-
-*** No todo es with
-
-- No todo es escribir y leer ficheros
-
-*** Es necesario trabajar con ficheros
-
-- Listas ficheros. 
-
-- Gestionar directorios.
-
-- Gestionar ficheros: borrar, renombrar, ...
-
-** Trabajando con ficheros
-
-*** os.system
-
-Permite ejecutar una orden del SO.
-
-*** Ejemplo con system :B_exampleblock:
-    :PROPERTIES:
-    :BEAMER_env: exampleblock
-    :END:
-#+name: system
-#+BEGIN_SRC python :results output :exports both :session ses
-import os
-os.system("ls *.pdf")
-#+END_SRC
-#+LaTeX: \scriptsize
-#+RESULTS: system
-: completo.pdf  copia.pdf  usage.pdf
-
-*** Cuidado :B_alertblock:
-    :PROPERTIES:
-    :BEAMER_env: alertblock
-    :END:
-
-+ *os.system* no es /portable/ entre SOs.
-
-+ Hay otras alternativas /portables/.
-
-** Listar ficheros
-
-*** Listar
-
-- glob(pattern) :: Permite buscar ficheros usando *.
-
-- os.listdir(dir) :: Lista un directorio.
-
-*** Ejemplo :B_exampleblock:
-    :PROPERTIES:
-    :BEAMER_env: exampleblock
-    :END:
-#+name: glob
-#+BEGIN_SRC python :results output :exports both :session ses
-import os, glob
-pdfs = glob.glob("*.pdf")
-pdfs2 = [dir for dir in os.listdir('.') if ".pdf" in dir]
-print(pdfs)
-print(pdfs2)
-#+END_SRC 
-#+LaTeX: \scriptsize
-#+RESULTS: glob
-: ['copia.pdf', 'completo.pdf', 'usage.pdf']
-: ['copia.pdf', 'completo.pdf', 'usage.pdf']
-
-** Trabajar con directorios
-
-*** Editar directorios
-
-- os.mkdir(dir) :: Crear directorio.
-- os.chdir(dir) :: Cambiar de directorio.
-- os.curdir :: Directorio actual.
-- os.rmdir(dir) :: Borrar directorio.
-
-*** Editar ficheros
-
-- os.remove(fname) :: Borra fichero.
-- os.rename(fold, fnew) :: Cambiar el nombre de directorio.
-- shutil.copy(origen, destino) :: Copiar fichero o directorio.
-- shutil.rmtree(dir) :: Borra directorio (cuidado).
-
-** Librería pathlib
-
-*** Nuevo interfaz
-
-- Clase Path con muchos métodos.
-
-- Totalmente independiente del SO.
-
-*** Ejemplo
-
-#+name: pathlib
-#+BEGIN_SRC python :results output :exports both :session ses
-  import pathlib
-  dir = pathlib.Path('.')
-  files = [file.name for file in dir.glob("*.pdf")]
-  print(files)
-#+END_SRC
-#+LaTeX: \scriptsize
-#+RESULTS: pathlib
-: ['copia.pdf', 'completo.pdf', 'usage.pdf']
-
-** Acceso a ficheros desde libpath
-
-*** Ejemplo
-#+name: libpath2
-#+BEGIN_SRC python :results output :exports both :session ses
-
-  from pathlib import Path
-  dir = Path('.')
-  file = dir / "usage.pdf"
-
-  if file.exists():
-    if file.is_dir():
-      print(file.name, "es un directorio")
-    else:
-      print(file.name, "es un fichero")
-      file.
-#+END_SRC
-#+LaTeX: \scriptsize
-#+RESULTS: libpath2
-: usage.pdf es un fichero
-
-** Trabajando con libpath
-
-*** Cambiando jpg -> jpeg
-
-#+name: jpeg2
-#+BEGIN_SRC python :results output :exports both :session ses
-  import pathlib
-  dir = pathlib.Path('.')
-  subdirs = [x for x in dir.iterdir() if x.is_dir()]
-  print(subdirs)
-
-  dir = Path('.') / 'borra'
-  print(dir.resolve())
-
-
-  if dir.exists():
-      files = list(dir.glob("*.jpeg"))
-
-      for file in files:
-          new_fname = str(file).replace(".jpeg", ".jpg")
-          file.rename(new_fname)
-#+END_SRC
-#+LaTeX: \scriptsize
-#+RESULTS: jpeg2
-#+begin_example
-[PosixPath('auto'), PosixPath('borra'), PosixPath('notebooks')]
-/mnt/home/daniel/working/docencia/ceuta/201718/curso_python/slides/borra
-#+end_example
-
-
 * Librerías                                                        
 ** Importando paquetes
 
@@ -3225,6 +2840,392 @@ daniel@ubuntu:~/working$
 \href{https://vimeo.com/233134524}{\includegraphics[width=\textwidth]{pipenv.png}}
 #+END_EXPORT
 #+END_CENTER
+
+
+* Uso de ficheros 
+
+** Uso de ficheros
+
+*** Un programa no está solo en el sistema
+
+- Tiene que comunicarse. 
+
+- La forma primordial es usando ficheros.
+
+*** Dos formas de interactuar
+
+- Leer y escribir ficheros.
+
+- Conocer la estructura de ficheros/directorios del ordenador. 
+
+** Uso de ficheros con Python
+
+*** Sentencia with
+
+- Uso de *with* para abrir ficheros.
+
+- Permite agrupar el código y no preocuparse de cerrar fichero.
+
+*** Mayor sencillez 
+
+- Alternativa librería os.path \Rightarrow libpath.
+
+- Uso de print para escribir en ficheros.
+
+** Sentencia with
+
+*** Sentencia with
+
+- Uso de *with* para abrir ficheros.
+
+- Permite agrupar el código y no preocuparse de cerrar fichero.
+
+*** Código                                                   :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+BEGIN_SRC python :results output :exports  :session ses
+  # No es necesario cerrarlo, file es local para el bloque
+  with open("salida.txt", "w") as file:
+      print("Hola a todos", file=file)
+      print("Hasta luego", file=file)
+#+END_SRC
+
+#+RESULTS:
+
+*** ¿Qué hace?
+
+1. Crea la variable /file/ asociada al nuevo fichero "salida.txt".
+
+2. Escribe un mensaje usando la variable /file/.
+
+3. Al terminar el bloque el fichero se cierra.
+
+** Cierre automático del fichero
+
+*** Ejemplo incorrecto
+
+#+NAME: errorfile
+#+BEGIN_SRC python :results output :exports both :session ses
+  # No es necesario cerrarlo, file es local para el bloque
+  with open("salida.txt", "w") as file:
+      print("Hola a todos", file=file)
+
+  print("Otro mensaje", file=file)
+#+END_SRC
+
+*** Da error                                                   :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+#+LATEX: \scriptsize
+#+RESULTS: errorfile
+: Traceback (most recent call last):
+:   File "<stdin>", line 1, in <module>
+:   File "/tmp/babel-1017136Z/python-10171jGE", line 5, in <module>
+:     print("Otro mensaje", file=file)
+: ValueError: I/O operation on closed file.
+
+** Modos de open
+
+Puede contener como parámetro una cadena "/modo/" o "/modotipo/, en donde:
+
+*** Modos de fichero
+
+- r (por defecto) :: Abrirlo para leer, si no existe lanza excepción.
+
+- w :: Abrirlo para escribir, si existe lo borra antes.
+
+- a :: Abrirlo para escribir, si existe añade al final.
+
+*** Tipo de fichero
+
+- t (Por defecto) :: Fichero de texto.
+
+- b :: Fichero binario.
+
+*** Ejemplo
+
+#+BEGIN_SRC python
+open(fname, "r") # Abre para leer
+open(fname, "wb") # Escribe fichero binario
+open(fname, "a") # Concatena uno de texto
+#+END_SRC
+
+** Escribiendo fichero binario
+
+***  Leyendo: read(longitud)
+
+#+NAME: readb
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("completo.pdf", "rb") as file:
+      head = file.read(22)
+      print(head)
+      second = file.read(5)
+      print(second)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: readb
+: b'%PDF-1.5\n%\xd0\xd4\xc5\xd8\n17 0 ob'
+: b'j\n<<\n'
+
+*** Escribiendo: write(buffer)
+
+#+NAME: writeb
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("completo.pdf", "rb") as finput:
+      with open("copia.pdf", "wb") as foutput:
+
+          buffer = finput.read(1024)
+ 
+          while buffer:
+              second = foutput.write(buffer)
+              buffer = finput.read(1024)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: writeb
+
+** Fichero de texto: leer
+
+*** readline: Lee una línea
+
+#+NAME: fread1
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+    line = file.readline()
+    print("Linea 1:", line)
+    print("Linea 1:", line.rstrip())
+    line = file.readline()
+    print("Linea 2:", line)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fread1
+: Linea 1: Hola a todos
+: 
+: Linea 1: Hola a todos
+: Linea 2: Hasta luego
+
+*** readlines: Lee todo el fichero de golpe
+
+#+NAME: fread2
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+    lines = file.readlines()
+    print("Lineas:", lines)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fread2
+: Lineas: ['Hola a todos\n', 'Hasta luego\n']
+
+** Fichero de texto: iteración
+
+*** Iterar un fichero da las líneas
+
+#+NAME: fiter
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+      for line in file:
+          print(line)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fiter
+: Hola a todos
+: 
+: Hasta luego
+
+*** Cuidado con los retornos de carro                          :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
+#+NAME: fiter2
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt") as file:
+      for line in file:
+          print(line.rstrip())
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fiter2
+: Hola a todos
+: Hasta luego
+
+** Fichero de texto: escribir
+
+*** Usar write
+
+#+NAME: fwritet
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt", "a") as fout:
+      fout.write("Nueva linea\n")
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fwritet
+
+*** Uso de print
+
+- print puede escribir.
+
+#+NAME: fprint1
+#+BEGIN_SRC python :results output :exports both :session ses
+  with open("salida.txt", "a") as fout:
+      print("Otra linea", file=fout)
+#+END_SRC
+#+LATEX: \scriptsize
+#+RESULTS: fprint1
+
+** Trabajando con ficheros
+
+*** No todo es with
+
+- No todo es escribir y leer ficheros
+
+*** Es necesario trabajar con ficheros
+
+- Listas ficheros. 
+
+- Gestionar directorios.
+
+- Gestionar ficheros: borrar, renombrar, ...
+
+** Trabajando con ficheros
+
+*** os.system
+
+Permite ejecutar una orden del SO.
+
+*** Ejemplo con system :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+name: system
+#+BEGIN_SRC python :results output :exports both :session ses
+import os
+os.system("ls *.pdf")
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: system
+: completo.pdf  copia.pdf  usage.pdf
+
+*** Cuidado :B_alertblock:
+    :PROPERTIES:
+    :BEAMER_env: alertblock
+    :END:
+
++ *os.system* no es /portable/ entre SOs.
+
++ Hay otras alternativas /portables/.
+
+** Listar ficheros
+
+*** Listar
+
+- glob(pattern) :: Permite buscar ficheros usando *.
+
+- os.listdir(dir) :: Lista un directorio.
+
+*** Ejemplo :B_exampleblock:
+    :PROPERTIES:
+    :BEAMER_env: exampleblock
+    :END:
+#+name: glob
+#+BEGIN_SRC python :results output :exports both :session ses
+import os, glob
+pdfs = glob.glob("*.pdf")
+pdfs2 = [dir for dir in os.listdir('.') if ".pdf" in dir]
+print(pdfs)
+print(pdfs2)
+#+END_SRC 
+#+LaTeX: \scriptsize
+#+RESULTS: glob
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+
+** Trabajar con directorios
+
+*** Editar directorios
+
+- os.mkdir(dir) :: Crear directorio.
+- os.chdir(dir) :: Cambiar de directorio.
+- os.curdir :: Directorio actual.
+- os.rmdir(dir) :: Borrar directorio.
+
+*** Editar ficheros
+
+- os.remove(fname) :: Borra fichero.
+- os.rename(fold, fnew) :: Cambiar el nombre de directorio.
+- shutil.copy(origen, destino) :: Copiar fichero o directorio.
+- shutil.rmtree(dir) :: Borra directorio (cuidado).
+
+** Librería pathlib
+
+*** Nuevo interfaz
+
+- Clase Path con muchos métodos.
+
+- Totalmente independiente del SO.
+
+*** Ejemplo
+
+#+name: pathlib
+#+BEGIN_SRC python :results output :exports both :session ses
+  import pathlib
+  dir = pathlib.Path('.')
+  files = [file.name for file in dir.glob("*.pdf")]
+  print(files)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: pathlib
+: ['copia.pdf', 'completo.pdf', 'usage.pdf']
+
+** Acceso a ficheros desde libpath
+
+*** Ejemplo
+#+name: libpath2
+#+BEGIN_SRC python :results output :exports both :session ses
+
+  from pathlib import Path
+  dir = Path('.')
+  file = dir / "usage.pdf"
+
+  if file.exists():
+    if file.is_dir():
+      print(file.name, "es un directorio")
+    else:
+      print(file.name, "es un fichero")
+      file.
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: libpath2
+: usage.pdf es un fichero
+
+** Trabajando con libpath
+
+*** Cambiando jpg -> jpeg
+
+#+name: jpeg2
+#+BEGIN_SRC python :results output :exports both :session ses
+  import pathlib
+  dir = pathlib.Path('.')
+  subdirs = [x for x in dir.iterdir() if x.is_dir()]
+  print(subdirs)
+
+  dir = Path('.') / 'borra'
+  print(dir.resolve())
+
+
+  if dir.exists():
+      files = list(dir.glob("*.jpeg"))
+
+      for file in files:
+          new_fname = str(file).replace(".jpeg", ".jpg")
+          file.rename(new_fname)
+#+END_SRC
+#+LaTeX: \scriptsize
+#+RESULTS: jpeg2
+#+begin_example
+[PosixPath('auto'), PosixPath('borra'), PosixPath('notebooks')]
+/mnt/home/daniel/working/docencia/ceuta/201718/curso_python/slides/borra
+#+end_example
 
 * [#B] Otro                                                        :noexport:
 
