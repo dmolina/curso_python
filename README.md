@@ -49,13 +49,25 @@ generar las transparencias.
 - [11-List-Comprehensions.ipynb](11-List-Comprehensions.ipynb)
 - [12-Generators.ipynb](12-Generators.ipynb)
 - [13-Modules-and-Packages.ipynb](13-Modules-and-Packages.ipynb)
-- [14-Srings-and-Regular-Expressions.ipynb](14-Strings-and-Regular-Expressions.ipynb)
+-
+  [14-Srings-and-Regular-Expressions.ipynb](14-Strings-and-Regular-Expressions.ipynb)
+  
+# Gestión de Paquetes
+
+- [Introducción a Pip](https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/)
+- [Introducción a Entornos Virtuales](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
+- [Tutorial de Pipenv](https://www.youtube.com/watch?v=GBQAKldqgZs)
+- [Alternativa a Pipenv: Poetry](https://poetry.eustace.io/)
 
 # Sobre las librerías científicas
+
+## Visión general ##
 
 - [Sobre numpy](https://docs.scipy.org/doc/numpy-dev/user/quickstart.html)
 
 - [Sobre pandas](http://pandas.pydata.org/pandas-docs/stable/10min.html)
+
+## Librerías de Visualización ##
 
 - [Librerías de visualización](https://blog.modeanalytics.com/python-data-visualization-libraries/)
 
@@ -63,11 +75,17 @@ generar las transparencias.
 
 - [Video tutorial de bokeh](https://www.youtube.com/watch?v=EQCtGIdA0nE)
 
+- [Tutorial/Presentación de Altair en PyCon2018](https://www.youtube.com/watch?v=ms29ZPUKxbU)
+
+## Machine Learning en Python ##
+
+
 - [Intro a scikit-learn](https://www.oreilly.com/ideas/intro-to-scikit-learn)
 
 - [Tutorial de scikit-learn](http://nbviewer.jupyter.org/github/jakevdp/sklearn_tutorial/blob/master/notebooks/Index.ipynb)
 
 - [Video Tutorial de Scikit-learn](https://www.youtube.com/watch?v=HC0J_SPm9co)
+
 
 ## Recursos útiles
 
